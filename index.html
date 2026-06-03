@@ -272,6 +272,22 @@
         .stat-val { display: block; font-size: 1.6rem; font-weight: 900; } 
         .stat-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-light); margin-top: 6px; pointer-events: none; } 
         
+        /* Updated Participant Count UI Badge */
+        .participant-badge {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-light);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            letter-spacing: 0.5px;
+        }
+
         .details-panel { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: left; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); } 
         .details-title { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; color: var(--sage-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; } 
         
@@ -360,7 +376,7 @@
         <!-- Results Section --> 
         <div id="result-section" class="section"> 
             <div class="results-card"> 
-                <div id="result-username" style="font-size:1.1rem; font-weight:700; margin-bottom:15px; color:var(--sage-dark);"></div> 
+                <div id="result-username" style="font-size:1.1rem; font-weight:700; margin-bottom:5px; color:var(--sage-dark);"></div> 
                 <div class="score-display"> 
                     <div style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; color: var(--text-light); font-weight: 700;">Final Score</div> 
                     <div class="score-num" id="res-score">0.0</div> 
@@ -374,6 +390,7 @@
                 
                 <div class="details-panel" id="details-panel"> 
                     <div class="details-title" id="details-title">Question Breakdown</div> 
+                    <div id="leaderboard-summary-box" style="text-align: center; display: none;"></div>
                     <div class="details-grid" id="details-list"></div> 
                 </div> 
                 
@@ -429,6 +446,9 @@
         ]; 
         let currentMoodIdx = 0; 
         
+        // Pool of Competitive & Fun Emojis for Usernames
+        const funEmojis = ['🎯', '🚀', '🧠', '🦁', '🔥', '🦉', '🦊', '⚡', '🏆', '💎', '🥋', '🦅', '🎯', '⚔️', '🌟'];
+
         function cycleMood() { 
             currentMoodIdx = (currentMoodIdx + 1) % moods.length; 
             const mood = moods[currentMoodIdx]; 
@@ -497,10 +517,13 @@
         } 
 
         function startExamWithUsername() { 
-            const username = document.getElementById('username-input').value.trim(); 
+            let username = document.getElementById('username-input').value.trim(); 
             if (!username) return showToast("Please enter a username"); 
 
-            exam.username = username; 
+            // NEW FEATURE: Roll a random emoji from our list and append it to the name
+            const randomEmoji = funEmojis[Math.floor(Math.random() * funEmojis.length)];
+            exam.username = `${username} ${randomEmoji}`; 
+
             document.getElementById('username-overlay').style.display = 'none'; 
             initApp(); 
         } 
@@ -646,11 +669,11 @@
             document.getElementById('res-wrong').innerText = wrong; 
             document.getElementById('res-skipped').innerText = skipped; 
             document.getElementById('details-panel').style.display = 'none'; 
+            document.getElementById('leaderboard-summary-box').style.display = 'none';
             document.getElementById('result-username').innerText = '@ ' + exam.username; 
             
             switchSection('result-section'); 
 
-            // Trigger cloud synchronization if available globally
             if(window.saveScoreToCloud) { 
                 window.saveScoreToCloud(score, correct, wrong, skipped); 
             } 
@@ -660,6 +683,9 @@
             const panel = document.getElementById('details-panel'); 
             const title = document.getElementById('details-title'); 
             const listGrid = document.getElementById('details-list'); 
+            const summaryBox = document.getElementById('leaderboard-summary-box');
+            
+            summaryBox.style.display = 'none'; 
             let htmlCards = []; 
             
             exam.keyMap.forEach((q, i) => { 
@@ -705,7 +731,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"; 
         import { getFirestore, doc, addDoc, collection, getDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"; 
 
-        // Split configuration properties to stop GitHub automated warnings
         const firebaseConfig = { 
             apiKey: "AIzaSyCRVdOWh5a85DBfL" + "glex6B479O67uJOS_I", 
             authDomain: "omrs-ab10a.firebaseapp.com", 
@@ -719,7 +744,6 @@
         const db = getFirestore(app); 
         console.log("🔥 Firebase Connected Successfully"); 
 
-        // 1. Publish Mock to Cloud Database (With Smart Auto-Copy Fix)
         async function publishNewMock() { 
             const title = document.getElementById('test-name').value.trim(); 
             const rawKey = document.getElementById('answer-key').value.toUpperCase().trim(); 
@@ -741,7 +765,6 @@
 
                 const mockLink = `${window.location.origin}${window.location.pathname}?mock=${docRef.id}`; 
                 
-                // Clipboard Auto-Copy Setup
                 navigator.clipboard.writeText(mockLink).then(() => { 
                     alert(`🎉 Mock Created & Copied to Clipboard!\n\nYou can directly paste (long-press paste) to share it now.\n\nLink: ${mockLink}`); 
                 }).catch(() => { 
@@ -754,7 +777,6 @@
             } 
         } 
 
-        // 2. Load Shared Mock Link Engine 
         async function checkUrlParams() { 
             const urlParams = new URLSearchParams(window.location.search); 
             const mockId = urlParams.get('mock'); 
@@ -784,7 +806,6 @@
             } 
         } 
 
-        // 3. Save Score to Database 
         async function saveScoreToCloud(score, correct, wrong, skipped) { 
             if (!exam.mockId) return; 
 
@@ -806,14 +827,16 @@
             } 
         } 
 
-        // 4. Render Dynamic Rankings Leaderboard 
+        // UPDATED FEATURE: Leaderboard now parses total candidate count dynamically
         async function fetchLeaderboard(mockId) { 
             const listGrid = document.getElementById('details-list'); 
             const panel = document.getElementById('details-panel'); 
             const title = document.getElementById('details-title'); 
+            const summaryBox = document.getElementById('leaderboard-summary-box');
 
             title.innerHTML = `<span style="color: var(--sage)">LIVE RANKINGS (Loading...)</span>`; 
             panel.style.display = 'block'; 
+            summaryBox.style.display = 'none';
             listGrid.innerHTML = 'Fetching scoreboard stats...'; 
 
             try { 
@@ -827,6 +850,9 @@
                 const querySnapshot = await getDocs(q); 
                 let htmlCards = []; 
                 let rank = 1; 
+
+                // NEW: Get exact total size of submissions for this test link
+                const totalParticipants = querySnapshot.size;
 
                 querySnapshot.forEach((doc) => { 
                     const data = doc.data(); 
@@ -844,6 +870,14 @@
                 }); 
 
                 if(htmlCards.length > 0) { 
+                    // NEW UI INJECTION: Show total candidate headcount badge
+                    summaryBox.innerHTML = `
+                        <div class="participant-badge">
+                            👥 Total Candidates: <b>${totalParticipants}</b>
+                        </div>
+                    `;
+                    summaryBox.style.display = 'block';
+
                     listGrid.style.display = 'grid'; 
                     listGrid.innerHTML = htmlCards.join(''); 
                     title.innerHTML = `<span style="color: var(--sage)">LIVE LEADERBOARD 🏆</span>`; 
@@ -856,12 +890,10 @@
             } 
         } 
 
-        // Bind scopes cleanly out to the global layout window 
         window.publishNewMock = publishNewMock; 
         window.saveScoreToCloud = saveScoreToCloud; 
         window.fetchLeaderboard = fetchLeaderboard; 
 
-        // Auto execute link parameter queries 
         window.addEventListener('DOMContentLoaded', checkUrlParams); 
     </script> 
 </body> 
