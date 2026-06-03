@@ -840,7 +840,41 @@
                 listGrid.innerHTML = `<i style="color:var(--error)">Run a submission first or verify your collection query index setup.</i>`;
             }
         }
+// 1. Publish Mock to Cloud Database (With Smart Auto-Copy Fix)
+        async function publishNewMock() {
+            const title = document.getElementById('test-name').value.trim();
+            const rawKey = document.getElementById('answer-key').value.toUpperCase().trim();
+            const plus = parseFloat(document.getElementById('mark-plus').value) || 2;
+            const minus = Math.abs(parseFloat(document.getElementById('mark-minus').value)) || 0.5;
 
+            if (!title || !rawKey) {
+                return showToast("Provide a Title and Answer Key!");
+            }
+
+            try {
+                const docRef = await addDoc(collection(db, "mocks"), {
+                    title: title,
+                    answerKey: rawKey,
+                    plus: plus,
+                    minus: minus,
+                    createdAt: new Date()
+                });
+
+                const mockLink = `${window.location.origin}${window.location.pathname}?mock=${docRef.id}`;
+                
+                // NEW: Clipboard Auto-Copy Engine
+                navigator.clipboard.writeText(mockLink).then(() => {
+                    alert(`🎉 Mock Created & Copied to Clipboard!\n\nYou can directly paste (Ctrl+V or long-press paste) to share it now.\n\nLink: ${mockLink}`);
+                }).catch(() => {
+                    // Fallback if clipboard permission is denied
+                    prompt("🎉 Mock Created! Copy the link below manually:", mockLink);
+                });
+
+            } catch (error) {
+                console.error("Cloud compilation failed:", error);
+                showToast("Failed to save mock to cloud.");
+            }
+        }
         // Bind scopes cleanly out to the global layout window
         window.publishNewMock = publishNewMock;
         window.saveScoreToCloud = saveScoreToCloud;
