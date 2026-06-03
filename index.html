@@ -1,0 +1,853 @@
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Floral OMR Pro | Made by Sunny</title> 
+    <style> 
+        :root { 
+            /* Default: Forest Breeze (Light) */ 
+            --paper: #FDFBF7; 
+            --sage: #8A9A5B; 
+            --sage-light: #A7B486; 
+            --sage-dark: #6B7A45; 
+            --blush: #E2A79D; 
+            --clay: #D4A373; 
+            --text: #3D4035; 
+            --text-light: #7A7D71; 
+            --border: #E8E4D9; 
+            --white: #FFFFFF; 
+            --error: #E07A5F; 
+            --accent: #F4A261; 
+            --bg: #F4F1EA; 
+            --overlay-bg: rgba(253, 251, 247, 0.95); 
+            --bubble-idle: #FFFFFF; 
+            --btn-text: #FFFFFF; 
+        } 
+        
+        /* 1. Midnight Glow (Dark) */ 
+        body.mood-midnight { 
+            --paper: #1A1D1A; 
+            --sage: #00FF88; 
+            --sage-light: #58D68D; 
+            --sage-dark: #00CC6A; 
+            --blush: #FF007F; 
+            --clay: #F1C40F; 
+            --text: #E0E0E0; 
+            --text-light: #A0A0A0; 
+            --border: #2D332D; 
+            --white: #252925; 
+            --error: #FF4757; 
+            --accent: #00E5FF; 
+            --bg: #0D0F0D; 
+            --overlay-bg: rgba(13, 15, 13, 0.9); 
+            --bubble-idle: #252925; 
+            --btn-text: #000000; 
+        } 
+        
+        /* 2. Sunset Serenity (Warm) */ 
+        body.mood-sunset { 
+            --paper: #FFF5F2; 
+            --sage: #FF7E5F; 
+            --sage-light: #FEB47B; 
+            --sage-dark: #D35400; 
+            --blush: #FF6B6B; 
+            --clay: #6D214F; 
+            --text: #4A235A; 
+            --text-light: #8E44AD; 
+            --border: #FADBD8; 
+            --white: #FFFFFF; 
+            --error: #C0392B; 
+            --accent: #F39C12; 
+            --bg: #FEF9E7; 
+            --overlay-bg: rgba(255, 245, 242, 0.95); 
+            --bubble-idle: #FFFFFF; 
+            --btn-text: #FFFFFF; 
+        } 
+        
+        /* 3. Deep Ocean (Cool) */ 
+        body.mood-ocean { 
+            --paper: #0F2027; 
+            --sage: #00D2FF; 
+            --sage-light: #3A7BD5; 
+            --sage-dark: #203A43; 
+            --blush: #00B4D8; 
+            --clay: #CAF0F8; 
+            --text: #E0FBFC; 
+            --text-light: #98C1D9; 
+            --border: #203A43; 
+            --white: #1B2E35; 
+            --error: #EE6C4D; 
+            --accent: #00D2FF; 
+            --bg: #050A0C; 
+            --overlay-bg: rgba(15, 32, 39, 0.9); 
+            --bubble-idle: #1B2E35; 
+            --btn-text: #000000; 
+        } 
+        
+        /* 4. Cyber Pulse (Neon) */ 
+        body.mood-cyber { 
+            --paper: #0B0014; 
+            --sage: #BF00FF; 
+            --sage-light: #E0AAFF; 
+            --sage-dark: #7B2CBF; 
+            --blush: #39FF14; 
+            --clay: #00F5FF; 
+            --text: #F0E6FF; 
+            --text-light: #B79CED; 
+            --border: #240046; 
+            --white: #160029; 
+            --error: #FF003C; 
+            --accent: #39FF14; 
+            --bg: #05000A; 
+            --overlay-bg: rgba(11, 0, 20, 0.9); 
+            --bubble-idle: #160029; 
+            --btn-text: #000000; 
+        } 
+        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } 
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            padding: 0; 
+            min-height: 100vh; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start; 
+            overflow-x: hidden; 
+            transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
+        } 
+        
+        /* Mood Toggle Button */ 
+        .mood-toggle { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 1000; 
+            width: 50px; 
+            height: 50px; 
+            border-radius: 50%; 
+            background: var(--paper); 
+            border: 1px solid var(--border); 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 1.4rem; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        } 
+        .mood-toggle:hover { transform: scale(1.1) rotate(15deg); box-shadow: 0 8px 25px rgba(0,0,0,0.3); } 
+        .mood-toggle:active { transform: scale(0.9); } 
+        
+        /* Decorative Background */ 
+        .leaf-bg { position: fixed; z-index: -1; opacity: 0.12; pointer-events: none; transition: color 0.6s ease; } 
+        .leaf-1 { top: -80px; left: -80px; width: 350px; transform: rotate(15deg); color: var(--sage); } 
+        .leaf-2 { bottom: -80px; right: -80px; width: 350px; transform: rotate(195deg); color: var(--clay); } 
+        
+        /* Floating Neon Watermark */ 
+        #watermark { 
+            position: fixed; 
+            z-index: 9999; 
+            opacity: 0; 
+            pointer-events: none; 
+            transition: opacity 1.5s ease-in-out; 
+            text-align: center; 
+            font-family: 'Georgia', serif; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            width: 250px; 
+            line-height: 1.2; 
+        } 
+        #watermark small { font-size: 0.75rem; font-weight: normal; opacity: 0.8; } 
+        
+        .app-container { 
+            width: 100%; 
+            max-width: 650px; 
+            margin: 20px; 
+            background: var(--paper); 
+            border-radius: 30px; 
+            box-shadow: 0 20px 80px rgba(0, 0, 0, 0.2); 
+            border: 1.5px solid var(--border); 
+            padding: 40px; 
+            position: relative; 
+            min-height: 500px; 
+            z-index: 10; 
+            transition: background-color 0.6s ease, border-color 0.6s ease, box-shadow 0.6s ease; 
+        } 
+        
+        @media (max-width: 500px) { .app-container { margin: 10px; padding: 25px 20px; border-radius: 20px; } } 
+        
+        h1 { font-family: 'Georgia', serif; font-weight: 400; text-align: center; color: var(--sage-dark); margin: 0; letter-spacing: 3px; font-size: 1.8rem; transition: color 0.6s ease; } 
+        .tagline { text-align: center; font-size: 0.7rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 4px; margin-bottom: 30px; } 
+        
+        .section { display: none; animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards; } 
+        .section.active { display: block; } 
+        
+        @keyframes slideUp { 
+            from { opacity: 0; transform: translateY(25px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        } 
+        
+        .field-group { margin-bottom: 24px; } 
+        label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: var(--sage-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; } 
+        
+        input[type="text"], textarea, input[type="number"] { 
+            width: 100%; padding: 15px; border: 2px solid var(--border); border-radius: 14px; 
+            background: var(--white); color: var(--text); font-family: inherit; font-size: 1rem; transition: all 0.3s; 
+        } 
+        
+        input:focus, textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 4px rgba(var(--sage), 0.15); } 
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; } 
+        
+        .btn { 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            background: var(--sage); color: var(--btn-text); border: none; padding: 16px 32px; 
+            border-radius: 50px; font-size: 1rem; font-weight: 800; cursor: pointer; transition: all 0.3s; 
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); width: 100%; margin-top: 10px; 
+            text-transform: uppercase; letter-spacing: 1px; 
+        } 
+        
+        .btn:hover { background: var(--sage-dark); transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); } 
+        .btn:active { transform: translateY(0); } 
+        .btn-outline { background: transparent; color: var(--sage); border: 2.5px solid var(--sage); box-shadow: none; } 
+        .btn-outline:hover { background: var(--sage); color: var(--btn-text); border-color: var(--sage); } 
+        
+        .omr-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; } 
+        .timer-box { display: flex; align-items: center; gap: 12px; background: var(--white); padding: 8px 18px; border-radius: 30px; border: 1px solid var(--border); font-variant-numeric: tabular-nums; box-shadow: 0 4px 10px rgba(0,0,0,0.05); } 
+        .timer-val { font-weight: 800; color: var(--clay); font-size: 1.1rem; } 
+        
+        .q-scroll { max-height: 55vh; overflow-y: auto; padding-right: 15px; margin-bottom: 20px; scroll-behavior: smooth; transition: filter 0.4s ease, opacity 0.4s ease; } 
+        .q-scroll.is-paused { filter: blur(15px); opacity: 0.5; pointer-events: none; } 
+        
+        .q-row { position: relative; display: flex; align-items: center; padding: 15px; margin-bottom: 12px; border-radius: 16px; background: rgba(0,0,0,0.02); border: 2px solid transparent; transition: 0.3s; } 
+        .q-row:hover { background: var(--white); border-color: var(--border); transform: translateX(5px); } 
+        .q-num { width: 45px; font-weight: 800; color: var(--sage-dark); font-size: 0.95rem; } 
+        
+        .q-row.skipped-row { border: 2px dashed var(--text-light); opacity: 0.8; } 
+        .skipped-badge { position: absolute; top: -10px; left: 15px; background: var(--text-light); color: var(--white); font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; font-weight: bold; display: none; text-transform: uppercase; letter-spacing: 1px; } 
+        .q-row.skipped-row .skipped-badge { display: block; } 
+        
+        .bubble-wrap { display: flex; gap: 12px; flex-grow: 1; justify-content: space-around; } 
+        .bubble { 
+            width: 42px; height: 42px; border-radius: 50%; border: 2.5px solid var(--border); 
+            display: flex; align-items: center; justify-content: center; cursor: pointer; 
+            font-size: 0.9rem; font-weight: 700; color: var(--text-light); transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            background: var(--bubble-idle); user-select: none; 
+        } 
+        .bubble.selected { background: var(--blush); border-color: var(--blush); color: white; transform: scale(1.15); box-shadow: 0 4px 15px rgba(0,0,0,0.2); } 
+        .bubble.correct { background: var(--sage) !important; border-color: var(--sage) !important; color: var(--btn-text) !important; } 
+        .bubble.wrong { background: var(--error) !important; border-color: var(--error) !important; color: white !important; } 
+        
+        .pause-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; width: 100%; margin: 20px 0; } 
+        .p-stat { background: var(--white); border: 1.5px solid var(--border); padding: 15px; border-radius: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); } 
+        
+        .overlay { 
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0; 
+            background: var(--overlay-bg); backdrop-filter: blur(12px); 
+            z-index: 100; display: none; flex-direction: column; align-items: center; 
+            justify-content: center; padding: 40px; text-align: center; border-radius: 30px; 
+        } 
+        
+        #pause-overlay { background: rgba(0, 0, 0, 0.15); backdrop-filter: blur(6px); } 
+        .pause-content-box { 
+            background: var(--paper); 
+            padding: 35px; 
+            border-radius: 25px; 
+            box-shadow: 0 15px 50px rgba(0,0,0,0.4); 
+            border: 2px solid var(--border); 
+            width: 100%; 
+        } 
+        
+        .results-card { text-align: center; } 
+        .score-display { margin: 20px 0; } 
+        .score-num { font-size: 4.5rem; font-family: 'Georgia', serif; color: var(--sage-dark); font-weight: 800; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.05); } 
+        
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0; } 
+        .stat-card { background: var(--white); padding: 18px 10px; border-radius: 22px; border: 1.5px solid var(--border); cursor: pointer; transition: 0.3s; } 
+        .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: var(--sage); } 
+        .stat-val { display: block; font-size: 1.6rem; font-weight: 900; } 
+        .stat-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-light); margin-top: 6px; pointer-events: none; } 
+        
+        .details-panel { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: left; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); } 
+        .details-title { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; color: var(--sage-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; } 
+        
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; } 
+        .detail-chip { background: var(--paper); border: 1.5px solid var(--border); padding: 12px; border-radius: 14px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px; transition: 0.2s; } 
+        .detail-chip:hover { border-color: var(--text-light); } 
+        .detail-chip b { color: var(--text); font-size: 1rem; } 
+        .d-ans { color: var(--sage-dark); font-weight: 800; } 
+        .d-you { color: var(--error); font-weight: 800; } 
+        
+        #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; z-index: 10000; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
+        
+        ::-webkit-scrollbar { width: 8px; } 
+        ::-webkit-scrollbar-track { background: transparent; } 
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; } 
+        ::-webkit-scrollbar-thumb:hover { background: var(--sage-light); } 
+        
+        #back-to-dash-btn { display: none; margin-bottom: 15px; font-size: 0.8rem; padding: 10px 20px; background: var(--paper); border: 2px solid var(--border); border-radius: 20px; cursor: pointer; color: var(--text-light); font-weight: 800; transition: 0.2s; text-transform: uppercase; } 
+        #back-to-dash-btn:hover { background: var(--white); color: var(--sage-dark); border-color: var(--sage); transform: scale(1.05); } 
+    </style> 
+</head> 
+<body class="mood-forest"> 
+    
+    <svg class="leaf-bg leaf-1" viewBox="0 0 200 200" fill="currentColor"><path d="M40,100 Q40,40 100,40 T160,100 T100,160 T40,100"/></svg> 
+    <svg class="leaf-bg leaf-2" viewBox="0 0 200 200" fill="currentColor"><path d="M40,100 Q40,40 100,40 T160,100 T100,160 T40,100"/></svg> 
+    
+    <div id="watermark">Made by Sunny?<br><small>(With Gemini's Help)</small></div> 
+    
+    <button class="mood-toggle" id="mood-btn" onclick="cycleMood()" title="Change Mood">??</button> 
+    
+    <div class="app-container" id="main-app"> 
+        <h1>Floral OMR Pro</h1> 
+        <div class="tagline">The Art of Assessment</div> 
+        
+        <div id="setup-section" class="section active"> 
+            <div class="field-group"><label>Exam Subject</label><input type="text" id="test-name" placeholder="e.g. Advanced Botany"></div> 
+            <div class="field-group"> 
+                <label>Answer Key</label> 
+                <textarea id="answer-key" placeholder="Examples:&#10;22A, B, C, D (Starts at 22, then 23, 24...)&#10;1A, 5C, 10D (Specific spacing)&#10;ABCD (Starts from 1 automatically)" rows="4"></textarea> 
+            </div> 
+            <div class="grid-2"> 
+                <div class="field-group"><label>Correct (+)</label><input type="number" id="mark-plus" value="4" step="1"></div> 
+                <div class="field-group"><label>Wrong (-)</label><input type="number" id="mark-minus" value="1" step="0.5"></div> 
+            </div> 
+            <button class="btn" onclick="showUsernamePopup()">Begin Examination</button>
+            <button class="btn btn-outline" onclick="publishNewMock()" style="margin-top: 15px;">? Create & Share Mock Link</button>
+        </div> 
+        
+        <div id="omr-section" class="section"> 
+            <button id="back-to-dash-btn" onclick="backToDashboard()">? Back to Dashboard</button> 
+            <div class="omr-header"> 
+                <div> 
+                    <div id="display-test-name" style="font-weight: 800; color: var(--sage-dark); font-size: 1.1rem;">Subject</div> 
+                    <div style="font-size: 0.8rem; color: var(--text-light);"><span id="q-count">0</span> Questions</div> 
+                </div> 
+                <div class="timer-box" id="timer-wrapper"> 
+                    <div class="timer-val" id="timer-display">00:00</div> 
+                    <button id="pause-btn" onclick="togglePause()" style="background:none; border:none; cursor:pointer; font-size:1.2rem; padding:0;">?</button> 
+                </div> 
+            </div> 
+            
+            <div id="pause-overlay" class="overlay"> 
+                <div class="pause-content-box"> 
+                    <h2 style="color: var(--sage-dark); margin-top: 0;">Exam Paused ??</h2> 
+                    <div class="pause-stats-grid"> 
+                        <div class="p-stat"><span class="stat-val" style="color:var(--sage)" id="p-right">0</span><span class="stat-lbl">Right</span></div> 
+                        <div class="p-stat"><span class="stat-val" style="color:var(--error)" id="p-wrong">0</span><span class="stat-lbl">Wrong</span></div> 
+                        <div class="p-stat"><span class="stat-val" id="p-skipped">0</span><span class="stat-lbl">Skipped</span></div> 
+                    </div> 
+                    <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 25px;">Content hidden for integrity. Resume when ready.</p> 
+                    <button class="btn btn-outline" style="width: auto; margin: 0 auto;" onclick="togglePause()">Resume</button> 
+                </div> 
+            </div> 
+            
+            <div class="q-scroll" id="q-container"></div> 
+            
+            <div id="action-buttons" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;"> 
+                <button class="btn btn-outline" onclick="if(confirm('Discard this exam?')) location.reload();">Discard</button> 
+                <button class="btn" onclick="confirmFinish()">Submit</button> 
+            </div> 
+        </div> 
+        
+        <div id="result-section" class="section"> 
+            <div class="results-card"> 
+                <div id="result-username" style="font-size:1.1rem; font-weight:700; margin-bottom:15px; color:var(--sage-dark);"></div>
+                <div class="score-display"> 
+                    <div style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; color: var(--text-light); font-weight: 700;">Final Score</div> 
+                    <div class="score-num" id="res-score">0.0</div> 
+                </div> 
+                
+                <div class="stats-grid"> 
+                    <div class="stat-card" onclick="showDetails('correct')"><span class="stat-val" style="color:var(--sage)" id="res-correct">0</span><span class="stat-lbl">Right</span></div> 
+                    <div class="stat-card" onclick="showDetails('wrong')"><span class="stat-val" style="color:var(--error)" id="res-wrong">0</span><span class="stat-lbl">Wrong</span></div> 
+                    <div class="stat-card" onclick="showDetails('skipped')"><span class="stat-val" id="res-skipped">0</span><span class="stat-lbl">Skipped</span></div> 
+                </div> 
+                
+                <div class="details-panel" id="details-panel"> 
+                    <div class="details-title" id="details-title">Question Breakdown</div> 
+                    <div class="details-grid" id="details-list"></div> 
+                </div> 
+                
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;"> 
+                    <button class="btn btn-outline" onclick="reviewExam()">Review Sheet</button> 
+                    <button class="btn" onclick="location.reload()">Start New</button> 
+                </div> 
+            </div> 
+        </div> 
+        
+        <div id="confirm-overlay" class="overlay"> 
+            <h2 style="color: var(--sage-dark);">Submit Paper?</h2> 
+            <p id="confirm-msg" style="margin-bottom: 25px;">You have 0 questions remaining.</p> 
+            <div style="display:flex; gap:15px; width:100%;"> 
+                <button class="btn btn-outline" onclick="document.getElementById('confirm-overlay').style.display='none'">Back</button> 
+                <button class="btn" onclick="processResults()">Confirm</button> 
+            </div> 
+        </div> 
+    </div> 
+
+    <div id="username-overlay" class="overlay">
+        <h2 style="color: var(--sage-dark);">Enter Username</h2>
+        <input type="text" id="username-input" placeholder="Enter your username" style="margin:20px 0;">
+        <button class="btn" onclick="startExamWithUsername()">Continue</button>
+    </div>
+    
+    <div id="toast"></div> 
+    
+    <script> 
+        let exam = {
+            username: "",
+            name: "",
+            keyMap: [],
+            userAns: [],
+            plus: 1,
+            minus: 0,
+            startTime: 0,
+            elapsed: 0,
+            isPaused: false,
+            timerId: null,
+            mockId: null
+        };
+
+        const moods = [ 
+            { id: 'forest', emoji: '??' }, 
+            { id: 'midnight', emoji: '??' }, 
+            { id: 'sunset', emoji: '??' }, 
+            { id: 'ocean', emoji: '??' }, 
+            { id: 'cyber', emoji: '?' } 
+        ]; 
+        let currentMoodIdx = 0; 
+        
+        function cycleMood() { 
+            currentMoodIdx = (currentMoodIdx + 1) % moods.length; 
+            const mood = moods[currentMoodIdx]; 
+            const body = document.body; 
+            const btn = document.getElementById('mood-btn'); 
+            
+            moods.forEach(m => body.classList.remove(`mood-${m.id}`)); 
+            body.classList.add(`mood-${mood.id}`); 
+            btn.innerText = mood.emoji; 
+            
+            const isDark = ['midnight', 'ocean', 'cyber'].includes(mood.id); 
+            btn.style.boxShadow = isDark ? '0 4px 15px rgba(0,255,136, 0.2)' : '0 4px 15px rgba(0,0,0,0.2)'; 
+        } 
+        
+        function startWatermark() { 
+            const wm = document.getElementById('watermark'); 
+            const app = document.getElementById('main-app'); 
+            setInterval(() => { 
+                const rect = app.getBoundingClientRect(); 
+                let x, y, overlaps, attempts = 0; 
+                wm.style.opacity = '0'; 
+                setTimeout(() => { 
+                    do { 
+                        x = Math.random() * (window.innerWidth - 250); 
+                        y = Math.random() * (window.innerHeight - 80); 
+                        overlaps = !(x + 250 < rect.left - 20 || x > rect.right + 20 || y + 80 < rect.top - 20 || y > rect.bottom + 20); 
+                        attempts++; 
+                    } while (overlaps && attempts < 50); 
+                    if(overlaps) { x = 10; y = 10; } 
+                    
+                    const isDark = ['midnight', 'ocean', 'cyber'].includes(moods[currentMoodIdx].id); 
+                    const hue = Math.floor(Math.random() * 360); 
+                    const lightness = isDark ? '70%' : '50%'; 
+                    const baseColor = `hsl(${hue}, 100%, ${lightness})`; 
+                    const glowColor = `hsl(${hue}, 100%, 80%)`; 
+                    
+                    wm.style.color = baseColor; 
+                    wm.style.textShadow = `0 0 10px ${glowColor}, 0 0 20px ${glowColor}`; 
+                    wm.style.left = x + 'px'; 
+                    wm.style.top = y + 'px'; 
+                    wm.style.opacity = isDark ? '0.7' : '1'; 
+                }, 1500); 
+            }, 5000); 
+        } 
+        
+        window.onload = startWatermark; 
+        
+        function showToast(msg) { 
+            const t = document.getElementById('toast'); 
+            t.innerText = msg; 
+            t.style.opacity = '1'; 
+            t.style.transform = 'translateX(-50%) translateY(0)'; 
+            setTimeout(() => { 
+                t.style.opacity = '0'; 
+                t.style.transform = 'translateX(-50%) translateY(-10px)'; 
+            }, 3000); 
+        } 
+        
+        function switchSection(id) { 
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active')); 
+            document.getElementById(id).classList.add('active'); 
+        } 
+        
+        function showUsernamePopup() {
+            document.getElementById('username-overlay').style.display = 'flex';
+        }
+
+        function startExamWithUsername() {
+            const username = document.getElementById('username-input').value.trim();
+            if (!username) return showToast("Please enter a username");
+
+            exam.username = username;
+            document.getElementById('username-overlay').style.display = 'none';
+            initApp();
+        }
+
+        function initApp() { 
+            let raw = document.getElementById('answer-key').value.toUpperCase(); 
+            if (!raw.trim()) return showToast("Enter your answer key first"); 
+            
+            let tokens = raw.split(/[\s,;]+/).filter(t => t.length > 0); 
+            let parsedKeys = []; 
+            let currentNum = 1; 
+            
+            tokens.forEach(token => { 
+                let specificMatch = token.match(/^(\d+)[-.:]?([A-D])$/); 
+                let letterOnlyMatch = token.match(/^([A-D])$/); 
+                
+                if (specificMatch) { 
+                    currentNum = parseInt(specificMatch[1]); 
+                    parsedKeys.push({ num: currentNum, ans: specificMatch[2] }); 
+                    currentNum++; 
+                } else if (letterOnlyMatch) { 
+                    parsedKeys.push({ num: currentNum, ans: letterOnlyMatch[1] }); 
+                    currentNum++; 
+                } 
+            }); 
+            
+            if (parsedKeys.length === 0) return showToast("No valid answers (A-D) found."); 
+            
+            exam.keyMap = parsedKeys; 
+            exam.name = document.getElementById('test-name').value || "Unnamed Assessment"; 
+            exam.userAns = new Array(exam.keyMap.length).fill(null); 
+            exam.plus = parseFloat(document.getElementById('mark-plus').value) || 0; 
+            exam.minus = Math.abs(parseFloat(document.getElementById('mark-minus').value)) || 0; 
+            
+            renderOMR(); 
+            startTimer(); 
+            switchSection('omr-section'); 
+        } 
+        
+        function renderOMR() { 
+            document.getElementById('display-test-name').innerText = exam.name; 
+            document.getElementById('q-count').innerText = exam.keyMap.length; 
+            const container = document.getElementById('q-container'); 
+            
+            container.innerHTML = exam.keyMap.map((q, i) => ` 
+                <div class="q-row" id="row-${i}"> 
+                    <span class="skipped-badge">Skipped</span> 
+                    <div class="q-num">Q${q.num}</div> 
+                    <div class="bubble-wrap"> 
+                        ${['A', 'B', 'C', 'D'].map(opt => ` 
+                            <div class="bubble" data-idx="${i}" data-opt="${opt}" onclick="handleBubble(${i}, '${opt}')">${opt}</div> 
+                        `).join('')} 
+                    </div> 
+                </div> 
+            `).join(''); 
+        } 
+        
+        function handleBubble(idx, opt) { 
+            if (exam.isPaused) return; 
+            const row = document.getElementById(`row-${idx}`); 
+            const bubbles = row.querySelectorAll('.bubble'); 
+            
+            if (exam.userAns[idx] === opt) { 
+                exam.userAns[idx] = null; 
+                bubbles.forEach(b => b.classList.remove('selected')); 
+            } else { 
+                exam.userAns[idx] = opt; 
+                bubbles.forEach(b => b.classList.toggle('selected', b.dataset.opt === opt)); 
+            } 
+        } 
+        
+        function startTimer() { 
+            exam.startTime = Date.now() - (exam.elapsed * 1000); 
+            exam.timerId = setInterval(() => { 
+                exam.elapsed = Math.floor((Date.now() - exam.startTime) / 1000); 
+                let m = Math.floor(exam.elapsed / 60).toString().padStart(2, '0'); 
+                let s = (exam.elapsed % 60).toString().padStart(2, '0'); 
+                document.getElementById('timer-display').innerText = `${m}:${s}`; 
+            }, 1000); 
+        } 
+        
+        function togglePause() { 
+            const overlay = document.getElementById('pause-overlay'); 
+            const btn = document.getElementById('pause-btn'); 
+            const container = document.getElementById('q-container'); 
+            
+            if (exam.isPaused) { 
+                startTimer(); 
+                overlay.style.display = 'none'; 
+                container.classList.remove('is-paused'); 
+                btn.innerText = "?"; 
+                exam.isPaused = false; 
+            } else { 
+                clearInterval(exam.timerId); 
+                let r = 0, w = 0, s = 0; 
+                exam.keyMap.forEach((q, i) => { 
+                    let u = exam.userAns[i]; 
+                    if (!u) s++; else if (u === q.ans) r++; else w++; 
+                }); 
+                document.getElementById('p-right').innerText = r; 
+                document.getElementById('p-wrong').innerText = w; 
+                document.getElementById('p-skipped').innerText = s; 
+                overlay.style.display = 'flex'; 
+                container.classList.add('is-paused'); 
+                btn.innerText = "??"; 
+                exam.isPaused = true; 
+            } 
+        } 
+        
+        function confirmFinish() { 
+            const skipped = exam.userAns.filter(a => a === null).length; 
+            document.getElementById('confirm-msg').innerText = `Finish now? ${skipped} questions are still empty.`; 
+            document.getElementById('confirm-overlay').style.display = 'flex'; 
+        } 
+        
+        function processResults() { 
+            clearInterval(exam.timerId); 
+            document.getElementById('confirm-overlay').style.display = 'none'; 
+            let correct = 0, wrong = 0, skipped = 0; 
+            
+            exam.keyMap.forEach((q, i) => { 
+                const user = exam.userAns[i]; 
+                const row = document.getElementById(`row-${i}`); 
+                const bubbles = row.querySelectorAll('.bubble'); 
+                bubbles.forEach(b => { 
+                    b.style.pointerEvents = 'none'; 
+                    if (b.dataset.opt === q.ans) b.classList.add('correct'); 
+                    if (user === b.dataset.opt && user !== q.ans) b.classList.add('wrong'); 
+                }); 
+                if (user === null) { 
+                    skipped++; 
+                    row.classList.add('skipped-row'); 
+                } else if (user === q.ans) { 
+                    correct++; 
+                } else { 
+                    wrong++; 
+                } 
+            }); 
+            
+            const score = (correct * exam.plus) - (wrong * exam.minus); 
+            document.getElementById('res-score').innerText = score.toFixed(1); 
+            document.getElementById('res-correct').innerText = correct; 
+            document.getElementById('res-wrong').innerText = wrong; 
+            document.getElementById('res-skipped').innerText = skipped; 
+            document.getElementById('details-panel').style.display = 'none'; 
+            document.getElementById('result-username').innerText = '@ ' + exam.username; 
+            
+            switchSection('result-section'); 
+
+            // Trigger cloud synchronization if available globally
+            if(window.saveScoreToCloud) {
+                window.saveScoreToCloud(score, correct, wrong, skipped);
+            }
+        } 
+        
+        function showDetails(type) { 
+            const panel = document.getElementById('details-panel'); 
+            const title = document.getElementById('details-title'); 
+            const listGrid = document.getElementById('details-list'); 
+            let htmlCards = []; 
+            
+            exam.keyMap.forEach((q, i) => { 
+                let u = exam.userAns[i]; 
+                if (type === 'skipped' && !u) { 
+                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-ans">Correct: ${q.ans}</span></div>`); 
+                } else if (type === 'correct' && u === q.ans) { 
+                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-ans">Key: ${q.ans}</span></div>`); 
+                } else if (type === 'wrong' && u && u !== q.ans) { 
+                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-you">Picked: ${u}</span><span class="d-ans">Key: ${q.ans}</span></div>`); 
+                } 
+            }); 
+            
+            panel.style.display = 'block'; 
+            let color = type === 'correct' ? 'var(--sage)' : (type === 'wrong' ? 'var(--error)' : 'var(--text-light)'); 
+            title.innerHTML = `<span style="color: ${color}">${type.toUpperCase()} LISTING (${htmlCards.length})</span>`; 
+            if(htmlCards.length > 0) { 
+                listGrid.style.display = 'grid'; 
+                listGrid.innerHTML = htmlCards.join(''); 
+            } else { 
+                listGrid.style.display = 'block'; 
+                listGrid.innerHTML = `<i>Nothing to show here.</i>`; 
+            } 
+        } 
+        
+        function reviewExam() { 
+            switchSection('omr-section'); 
+            document.getElementById('timer-wrapper').style.display = 'none'; 
+            document.getElementById('action-buttons').style.display = 'none'; 
+            document.getElementById('back-to-dash-btn').style.display = 'block'; 
+        } 
+        
+        function backToDashboard() { 
+            switchSection('result-section'); 
+            document.getElementById('timer-wrapper').style.display = 'flex'; 
+            document.getElementById('action-buttons').style.display = 'grid'; 
+            document.getElementById('back-to-dash-btn').style.display = 'none'; 
+        } 
+    </script> 
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+        import { getFirestore, doc, addDoc, collection, getDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+        // Your specific cloud configurations
+        const firebaseConfig = {
+            apiKey: "AIzaSyCRVdOWh5a85DBfLglex6B479O67uJOS_I",
+            authDomain: "omrs-ab10a.firebaseapp.com",
+            projectId: "omrs-ab10a",
+            storageBucket: "omrs-ab10a.firebasestorage.app",
+            messagingSenderId: "165324118549",
+            appId: "1:165324118549:web:4547987041600a2cc10c1c"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        console.log("?? Firebase Connected Successfully");
+
+        // 1. Publish Mock to Cloud Database
+        async function publishNewMock() {
+            const title = document.getElementById('test-name').value.trim();
+            const rawKey = document.getElementById('answer-key').value.toUpperCase().trim();
+            const plus = parseFloat(document.getElementById('mark-plus').value) || 2;
+            const minus = Math.abs(parseFloat(document.getElementById('mark-minus').value)) || 0.5;
+
+            if (!title || !rawKey) {
+                return showToast("Provide a Title and Answer Key!");
+            }
+
+            try {
+                const docRef = await addDoc(collection(db, "mocks"), {
+                    title: title,
+                    answerKey: rawKey,
+                    plus: plus,
+                    minus: minus,
+                    createdAt: new Date()
+                });
+
+                const mockLink = `${window.location.origin}${window.location.pathname}?mock=${docRef.id}`;
+                alert(`?? Mock Created Successfully!\n\nShare this link:\n${mockLink}`);
+            } catch (error) {
+                console.error("Cloud compilation failed:", error);
+                showToast("Failed to save mock to cloud.");
+            }
+        }
+
+        // 2. Load Shared Mock Link Engine
+        async function checkUrlParams() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mockId = urlParams.get('mock');
+
+            if (mockId) {
+                showToast("Fetching cloud mock details...");
+                try {
+                    const docRef = doc(db, "mocks", mockId);
+                    const docSnap = await getDoc(docRef);
+
+                    if (docSnap.exists()) {
+                        const mockData = docSnap.data();
+                        exam.mockId = mockId; 
+                        
+                        document.getElementById('test-name').value = mockData.title;
+                        document.getElementById('answer-key').value = mockData.answerKey;
+                        document.getElementById('mark-plus').value = mockData.plus;
+                        document.getElementById('mark-minus').value = mockData.minus;
+                        
+                        showToast(`Ready: ${mockData.title}`);
+                    } else {
+                        showToast("Mock not found.");
+                    }
+                } catch (error) {
+                    console.error("URL collection parse failure:", error);
+                }
+            }
+        }
+
+        // 3. Save Score to Database
+        async function saveScoreToCloud(score, correct, wrong, skipped) {
+            if (!exam.mockId) return; // Ignore tracking if working on local scratch sheet
+
+            try {
+                await addDoc(collection(db, "scores"), {
+                    mockId: exam.mockId,
+                    username: exam.username,
+                    score: parseFloat(score.toFixed(1)),
+                    right: correct,
+                    wrong: wrong,
+                    skipped: skipped,
+                    timeTaken: exam.elapsed,
+                    submittedAt: new Date()
+                });
+                showToast("Score synced to Live Rankings! ??");
+                fetchLeaderboard(exam.mockId);
+            } catch (error) {
+                console.error("Score registration broken:", error);
+            }
+        }
+
+        // 4. Render Dynamic Rankings Leaderboard
+        async function fetchLeaderboard(mockId) {
+            const listGrid = document.getElementById('details-list');
+            const panel = document.getElementById('details-panel');
+            const title = document.getElementById('details-title');
+
+            title.innerHTML = `<span style="color: var(--sage)">LIVE RANKINGS (Loading...)</span>`;
+            panel.style.display = 'block';
+            listGrid.innerHTML = 'Fetching scoreboard stats...';
+
+            try {
+                const q = query(
+                    collection(db, "scores"), 
+                    where("mockId", "==", mockId),
+                    orderBy("score", "desc"),
+                    orderBy("timeTaken", "asc")
+                );
+                
+                const querySnapshot = await getDocs(q);
+                let htmlCards = [];
+                let rank = 1;
+
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const minutes = Math.floor(data.timeTaken / 60);
+                    const seconds = data.timeTaken % 60;
+
+                    htmlCards.push(`
+                        <div class="detail-chip" style="${data.username === exam.username ? 'border: 2px solid var(--sage); background: var(--white); scale: 1.02;' : ''}">
+                            <b>#${rank} ${data.username}</b>
+                            <span class="d-ans" style="font-size:1.1rem;">Score: ${data.score}</span>
+                            <span style="font-size:0.75rem; color:var(--text-light)">? ${minutes}m ${seconds}s</span>
+                        </div>
+                    `);
+                    rank++;
+                });
+
+                if(htmlCards.length > 0) {
+                    listGrid.style.display = 'grid';
+                    listGrid.innerHTML = htmlCards.join('');
+                    title.innerHTML = `<span style="color: var(--sage)">LIVE LEADERBOARD ??</span>`;
+                } else {
+                    listGrid.innerHTML = '<i>No ranks listed yet. Be the pioneer!</i>';
+                }
+            } catch (error) {
+                console.error("Rank presentation engine failure:", error);
+                listGrid.innerHTML = `<i style="color:var(--error)">Run a submission first or verify your collection query index setup.</i>`;
+            }
+        }
+
+        // Bind scopes cleanly out to the global layout window
+        window.publishNewMock = publishNewMock;
+        window.saveScoreToCloud = saveScoreToCloud;
+        window.fetchLeaderboard = fetchLeaderboard;
+
+        // Auto execute link parameter queries immediately upon compilation frame resolution
+        window.addEventListener('DOMContentLoaded', checkUrlParams);
+    </script>
+</body> 
+</html>
