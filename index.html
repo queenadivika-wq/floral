@@ -266,29 +266,31 @@
         .score-display { margin: 20px 0; } 
         .score-num { font-size: 4.5rem; font-family: 'Georgia', serif; color: var(--sage-dark); font-weight: 800; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.05); } 
         
-        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 30px 0; } 
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; } 
         .stat-card { background: var(--white); padding: 18px 10px; border-radius: 22px; border: 1.5px solid var(--border); cursor: pointer; transition: 0.3s; } 
         .stat-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); border-color: var(--sage); } 
         .stat-val { display: block; font-size: 1.6rem; font-weight: 900; } 
         .stat-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-light); margin-top: 6px; pointer-events: none; } 
         
-        /* Updated Participant Count UI Badge */
-        .participant-badge {
-            background: var(--bg);
-            border: 1px solid var(--border);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--text-light);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 15px;
-            letter-spacing: 0.5px;
-        }
+        .participant-badge { 
+            background: var(--bg); 
+            border: 1px solid var(--border); 
+            padding: 6px 16px; 
+            border-radius: 20px; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            color: var(--text-light); 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            margin-bottom: 15px; 
+            letter-spacing: 0.5px; 
+        } 
 
+        /* Separate container dashboards */
         .details-panel { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: left; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); } 
+        .leaderboard-panel { background: var(--white); border: 2px dashed var(--sage); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,0.02); }
+        
         .details-title { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; color: var(--sage-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; } 
         
         .details-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; } 
@@ -316,14 +318,12 @@
     
     <div id="watermark">Made by Sunny✨<br><small>(With Gemini's Help)</small></div> 
     
-    <!-- Mood Switcher --> 
     <button class="mood-toggle" id="mood-btn" onclick="cycleMood()" title="Change Mood">🌿</button> 
     
     <div class="app-container" id="main-app"> 
         <h1>Floral OMR Pro</h1> 
         <div class="tagline">The Art of Assessment</div> 
         
-        <!-- Setup Section --> 
         <div id="setup-section" class="section active"> 
             <div class="field-group"><label>Exam Subject</label><input type="text" id="test-name" placeholder="e.g. Advanced Botany"></div> 
             <div class="field-group"> 
@@ -338,7 +338,6 @@
             <button class="btn btn-outline" onclick="publishNewMock()" style="margin-top: 15px;">✨ Create & Share Mock Link</button> 
         </div> 
         
-        <!-- OMR Sheet Section --> 
         <div id="omr-section" class="section"> 
             <button id="back-to-dash-btn" onclick="backToDashboard()">← Back to Dashboard</button> 
             <div class="omr-header"> 
@@ -373,7 +372,6 @@
             </div> 
         </div> 
         
-        <!-- Results Section --> 
         <div id="result-section" class="section"> 
             <div class="results-card"> 
                 <div id="result-username" style="font-size:1.1rem; font-weight:700; margin-bottom:5px; color:var(--sage-dark);"></div> 
@@ -381,6 +379,8 @@
                     <div style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; color: var(--text-light); font-weight: 700;">Final Score</div> 
                     <div class="score-num" id="res-score">0.0</div> 
                 </div> 
+
+                <button class="btn" id="re-fetch-leaderboard-btn" onclick="triggerLeaderboardLoad()" style="background:var(--sage-dark); margin-bottom:20px;">🏆 View Global Leaderboard</button>
                 
                 <div class="stats-grid"> 
                     <div class="stat-card" onclick="showDetails('correct')"><span class="stat-val" style="color:var(--sage)" id="res-correct">0</span><span class="stat-lbl">Right</span></div> 
@@ -390,9 +390,14 @@
                 
                 <div class="details-panel" id="details-panel"> 
                     <div class="details-title" id="details-title">Question Breakdown</div> 
-                    <div id="leaderboard-summary-box" style="text-align: center; display: none;"></div>
                     <div class="details-grid" id="details-list"></div> 
                 </div> 
+
+                <div class="leaderboard-panel" id="leaderboard-panel">
+                    <div class="details-title" id="leaderboard-title" style="color:var(--sage-dark);">Live Rankings 🏆</div>
+                    <div id="leaderboard-summary-box"></div>
+                    <div class="details-grid" id="leaderboard-list"></div>
+                </div>
                 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;"> 
                     <button class="btn btn-outline" onclick="reviewExam()">Review Sheet</button> 
@@ -401,7 +406,6 @@
             </div> 
         </div> 
         
-        <!-- Confirmation Overlay --> 
         <div id="confirm-overlay" class="overlay"> 
             <h2 style="color: var(--sage-dark);">Submit Paper?</h2> 
             <p id="confirm-msg" style="margin-bottom: 25px;">You have 0 questions remaining.</p> 
@@ -412,7 +416,6 @@
         </div> 
     </div> 
 
-    <!-- Username Popup --> 
     <div id="username-overlay" class="overlay"> 
         <h2 style="color: var(--sage-dark);">Enter Username</h2> 
         <input type="text" id="username-input" placeholder="Enter your username" style="margin:20px 0;"> 
@@ -421,7 +424,6 @@
     
     <div id="toast"></div> 
     
-    <!-- STANDARD USER INTERFACE LOGIC --> 
     <script> 
         let exam = { 
             username: "", 
@@ -446,8 +448,7 @@
         ]; 
         let currentMoodIdx = 0; 
         
-        // Pool of Competitive & Fun Emojis for Usernames
-        const funEmojis = ['🎯', '🚀', '🧠', '🦁', '🔥', '🦉', '🦊', '⚡', '🏆', '💎', '🥋', '🦅', '🎯', '⚔️', '🌟'];
+        const funEmojis = ['🎯', '🚀', '🧠', '🦁', '🔥', '🦉', '🦊', '⚡', '🏆', '💎', '🥋', '🦅', '⚔️', '🌟'];
 
         function cycleMood() { 
             currentMoodIdx = (currentMoodIdx + 1) % moods.length; 
@@ -458,9 +459,6 @@
             moods.forEach(m => body.classList.remove(`mood-${m.id}`)); 
             body.classList.add(`mood-${mood.id}`); 
             btn.innerText = mood.emoji; 
-            
-            const isDark = ['midnight', 'ocean', 'cyber'].includes(mood.id); 
-            btn.style.boxShadow = isDark ? '0 4px 15px rgba(0,255,136, 0.2)' : '0 4px 15px rgba(0,0,0,0.2)'; 
         } 
         
         function startWatermark() { 
@@ -478,18 +476,9 @@
                         attempts++; 
                     } while (overlaps && attempts < 50); 
                     if(overlaps) { x = 10; y = 10; } 
-                    
-                    const isDark = ['midnight', 'ocean', 'cyber'].includes(moods[currentMoodIdx].id); 
-                    const hue = Math.floor(Math.random() * 360); 
-                    const lightness = isDark ? '70%' : '50%'; 
-                    const baseColor = `hsl(${hue}, 100%, ${lightness})`; 
-                    const glowColor = `hsl(${hue}, 100%, 80%)`; 
-                    
-                    wm.style.color = baseColor; 
-                    wm.style.textShadow = `0 0 10px ${glowColor}, 0 0 20px ${glowColor}`; 
                     wm.style.left = x + 'px'; 
                     wm.style.top = y + 'px'; 
-                    wm.style.opacity = isDark ? '0.7' : '1'; 
+                    wm.style.opacity = '0.7'; 
                 }, 1500); 
             }, 5000); 
         } 
@@ -519,11 +508,8 @@
         function startExamWithUsername() { 
             let username = document.getElementById('username-input').value.trim(); 
             if (!username) return showToast("Please enter a username"); 
-
-            // NEW FEATURE: Roll a random emoji from our list and append it to the name
             const randomEmoji = funEmojis[Math.floor(Math.random() * funEmojis.length)];
             exam.username = `${username} ${randomEmoji}`; 
-
             document.getElementById('username-overlay').style.display = 'none'; 
             initApp(); 
         } 
@@ -531,7 +517,6 @@
         function initApp() { 
             let raw = document.getElementById('answer-key').value.toUpperCase(); 
             if (!raw.trim()) return showToast("Enter your answer key first"); 
-            
             let tokens = raw.split(/[\s,;]+/).filter(t => t.length > 0); 
             let parsedKeys = []; 
             let currentNum = 1; 
@@ -539,7 +524,6 @@
             tokens.forEach(token => { 
                 let specificMatch = token.match(/^(\d+)[-.:]?([A-D])$/); 
                 let letterOnlyMatch = token.match(/^([A-D])$/); 
-                
                 if (specificMatch) { 
                     currentNum = parseInt(specificMatch[1]); 
                     parsedKeys.push({ num: currentNum, ans: specificMatch[2] }); 
@@ -551,7 +535,6 @@
             }); 
             
             if (parsedKeys.length === 0) return showToast("No valid answers (A-D) found."); 
-            
             exam.keyMap = parsedKeys; 
             exam.name = document.getElementById('test-name').value || "Unnamed Assessment"; 
             exam.userAns = new Array(exam.keyMap.length).fill(null); 
@@ -567,7 +550,6 @@
             document.getElementById('display-test-name').innerText = exam.name; 
             document.getElementById('q-count').innerText = exam.keyMap.length; 
             const container = document.getElementById('q-container'); 
-            
             container.innerHTML = exam.keyMap.map((q, i) => ` 
                 <div class="q-row" id="row-${i}"> 
                     <span class="skipped-badge">Skipped</span> 
@@ -585,7 +567,6 @@
             if (exam.isPaused) return; 
             const row = document.getElementById(`row-${idx}`); 
             const bubbles = row.querySelectorAll('.bubble'); 
-            
             if (exam.userAns[idx] === opt) { 
                 exam.userAns[idx] = null; 
                 bubbles.forEach(b => b.classList.remove('selected')); 
@@ -609,7 +590,6 @@
             const overlay = document.getElementById('pause-overlay'); 
             const btn = document.getElementById('pause-btn'); 
             const container = document.getElementById('q-container'); 
-            
             if (exam.isPaused) { 
                 startTimer(); 
                 overlay.style.display = 'none'; 
@@ -668,10 +648,14 @@
             document.getElementById('res-correct').innerText = correct; 
             document.getElementById('res-wrong').innerText = wrong; 
             document.getElementById('res-skipped').innerText = skipped; 
+            
             document.getElementById('details-panel').style.display = 'none'; 
-            document.getElementById('leaderboard-summary-box').style.display = 'none';
+            document.getElementById('leaderboard-panel').style.display = 'none';
             document.getElementById('result-username').innerText = '@ ' + exam.username; 
             
+            // Hide the leaderboard toggle button if it's a manual custom layout with no firebase link tracking
+            document.getElementById('re-fetch-leaderboard-btn').style.display = exam.mockId ? 'flex' : 'none';
+
             switchSection('result-section'); 
 
             if(window.saveScoreToCloud) { 
@@ -680,12 +664,12 @@
         } 
         
         function showDetails(type) { 
+            // Close leaderboard module if open to avoid visual noise
+            document.getElementById('leaderboard-panel').style.display = 'none';
+
             const panel = document.getElementById('details-panel'); 
             const title = document.getElementById('details-title'); 
             const listGrid = document.getElementById('details-list'); 
-            const summaryBox = document.getElementById('leaderboard-summary-box');
-            
-            summaryBox.style.display = 'none'; 
             let htmlCards = []; 
             
             exam.keyMap.forEach((q, i) => { 
@@ -710,6 +694,14 @@
                 listGrid.innerHTML = `<i>Nothing to show here.</i>`; 
             } 
         } 
+
+        function triggerLeaderboardLoad() {
+            // Close question list to clear layout screen focus
+            document.getElementById('details-panel').style.display = 'none';
+            if(window.fetchLeaderboard && exam.mockId) {
+                window.fetchLeaderboard(exam.mockId);
+            }
+        }
         
         function reviewExam() { 
             switchSection('omr-section'); 
@@ -721,12 +713,11 @@
         function backToDashboard() { 
             switchSection('result-section'); 
             document.getElementById('timer-wrapper').style.display = 'flex'; 
-            document.getElementById('action-buttons').style.display = 'grid'; 
+            document.getElementById('action-buttons').style.grid = 'grid'; 
             document.getElementById('back-to-dash-btn').style.display = 'none'; 
         } 
     </script> 
 
-    <!-- FIREBASE MODULE & CLOUD ENGINE --> 
     <script type="module"> 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"; 
         import { getFirestore, doc, addDoc, collection, getDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"; 
@@ -742,7 +733,6 @@
 
         const app = initializeApp(firebaseConfig); 
         const db = getFirestore(app); 
-        console.log("🔥 Firebase Connected Successfully"); 
 
         async function publishNewMock() { 
             const title = document.getElementById('test-name').value.trim(); 
@@ -750,65 +740,41 @@
             const plus = parseFloat(document.getElementById('mark-plus').value) || 2; 
             const minus = Math.abs(parseFloat(document.getElementById('mark-minus').value)) || 0.5; 
 
-            if (!title || !rawKey) { 
-                return showToast("Provide a Title and Answer Key!"); 
-            } 
+            if (!title || !rawKey) return showToast("Provide a Title and Answer Key!"); 
 
             try { 
                 const docRef = await addDoc(collection(db, "mocks"), { 
-                    title: title, 
-                    answerKey: rawKey, 
-                    plus: plus, 
-                    minus: minus, 
-                    createdAt: new Date() 
+                    title: title, answerKey: rawKey, plus: plus, minus: minus, createdAt: new Date() 
                 }); 
-
                 const mockLink = `${window.location.origin}${window.location.pathname}?mock=${docRef.id}`; 
-                
                 navigator.clipboard.writeText(mockLink).then(() => { 
-                    alert(`🎉 Mock Created & Copied to Clipboard!\n\nYou can directly paste (long-press paste) to share it now.\n\nLink: ${mockLink}`); 
-                }).catch(() => { 
-                    prompt("🎉 Mock Created! Copy the link below manually:", mockLink); 
-                }); 
-
-            } catch (error) { 
-                console.error("Cloud compilation failed:", error); 
-                showToast("Failed to save mock to cloud."); 
-            } 
+                    alert(`🎉 Mock Created & Copied to Clipboard!\n\nLink: ${mockLink}`); 
+                }).catch(() => { prompt("🎉 Mock Created! Copy here:", mockLink); }); 
+            } catch (error) { showToast("Failed to save mock."); } 
         } 
 
         async function checkUrlParams() { 
             const urlParams = new URLSearchParams(window.location.search); 
             const mockId = urlParams.get('mock'); 
-
             if (mockId) { 
-                showToast("Fetching cloud mock details..."); 
                 try { 
                     const docRef = doc(db, "mocks", mockId); 
                     const docSnap = await getDoc(docRef); 
-
                     if (docSnap.exists()) { 
                         const mockData = docSnap.data(); 
                         exam.mockId = mockId; 
-                        
                         document.getElementById('test-name').value = mockData.title; 
                         document.getElementById('answer-key').value = mockData.answerKey; 
                         document.getElementById('mark-plus').value = mockData.plus; 
                         document.getElementById('mark-minus').value = mockData.minus; 
-                        
                         showToast(`Ready: ${mockData.title}`); 
-                    } else { 
-                        showToast("Mock not found."); 
                     } 
-                } catch (error) { 
-                    console.error("URL collection parse failure:", error); 
-                } 
+                } catch (error) { console.error(error); } 
             } 
         } 
 
         async function saveScoreToCloud(score, correct, wrong, skipped) { 
             if (!exam.mockId) return; 
-
             try { 
                 await addDoc(collection(db, "scores"), { 
                     mockId: exam.mockId, 
@@ -822,79 +788,19 @@
                 }); 
                 showToast("Score synced to Live Rankings! 🏆"); 
                 fetchLeaderboard(exam.mockId); 
-            } catch (error) { 
-                console.error("Score registration broken:", error); 
-            } 
+            } catch (error) { console.error(error); } 
         } 
 
-        // UPDATED FEATURE: Leaderboard now parses total candidate count dynamically
         async function fetchLeaderboard(mockId) { 
-            const listGrid = document.getElementById('details-list'); 
-            const panel = document.getElementById('details-panel'); 
-            const title = document.getElementById('details-title'); 
-            const summaryBox = document.getElementById('leaderboard-summary-box');
+            const lGrid = document.getElementById('leaderboard-list'); 
+            const lPanel = document.getElementById('leaderboard-panel'); 
+            const summaryBox = document.getElementById('leaderboard-summary-box'); 
 
-            title.innerHTML = `<span style="color: var(--sage)">LIVE RANKINGS (Loading...)</span>`; 
-            panel.style.display = 'block'; 
-            summaryBox.style.display = 'none';
-            listGrid.innerHTML = 'Fetching scoreboard stats...'; 
+            lPanel.style.display = 'block'; 
+            lGrid.innerHTML = 'Fetching scoreboard stats...'; 
 
             try { 
                 const q = query( 
                     collection(db, "scores"), 
                     where("mockId", "==", mockId), 
-                    orderBy("score", "desc"), 
-                    orderBy("timeTaken", "asc") 
-                ); 
-                
-                const querySnapshot = await getDocs(q); 
-                let htmlCards = []; 
-                let rank = 1; 
-
-                // NEW: Get exact total size of submissions for this test link
-                const totalParticipants = querySnapshot.size;
-
-                querySnapshot.forEach((doc) => { 
-                    const data = doc.data(); 
-                    const minutes = Math.floor(data.timeTaken / 60); 
-                    const seconds = data.timeTaken % 60; 
-
-                    htmlCards.push(` 
-                        <div class="detail-chip" style="${data.username === exam.username ? 'border: 2px solid var(--sage); background: var(--white); scale: 1.02;' : ''}"> 
-                            <b>#${rank} ${data.username}</b> 
-                            <span class="d-ans" style="font-size:1.1rem;">Score: ${data.score}</span> 
-                            <span style="font-size:0.75rem; color:var(--text-light)">⏱ ${minutes}m ${seconds}s</span> 
-                        </div> 
-                    `); 
-                    rank++; 
-                }); 
-
-                if(htmlCards.length > 0) { 
-                    // NEW UI INJECTION: Show total candidate headcount badge
-                    summaryBox.innerHTML = `
-                        <div class="participant-badge">
-                            👥 Total Candidates: <b>${totalParticipants}</b>
-                        </div>
-                    `;
-                    summaryBox.style.display = 'block';
-
-                    listGrid.style.display = 'grid'; 
-                    listGrid.innerHTML = htmlCards.join(''); 
-                    title.innerHTML = `<span style="color: var(--sage)">LIVE LEADERBOARD 🏆</span>`; 
-                } else { 
-                    listGrid.innerHTML = '<i>No ranks listed yet. Be the pioneer!</i>'; 
-                } 
-            } catch (error) { 
-                console.error("Rank presentation engine failure:", error); 
-                listGrid.innerHTML = `<i style="color:var(--error)">Run a submission first or verify your collection query index setup.</i>`; 
-            } 
-        } 
-
-        window.publishNewMock = publishNewMock; 
-        window.saveScoreToCloud = saveScoreToCloud; 
-        window.fetchLeaderboard = fetchLeaderboard; 
-
-        window.addEventListener('DOMContentLoaded', checkUrlParams); 
-    </script> 
-</body> 
-</html>
+                    orderBy("
