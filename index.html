@@ -1,3 +1,4 @@
+
 <!DOCTYPE html> 
 <html lang="en"> 
 <head> 
@@ -100,7 +101,7 @@
             --error: #FF003C; 
             --accent: #39FF14; 
             --bg: #05000A; 
-            --overlay-bg: rgba(11, 0, 20, 0.9); 
+            --overlay-bg: rgba(11, 0, 20, 0.95); 
             --bubble-idle: #160029; 
             --btn-text: #000000; 
         } 
@@ -300,6 +301,12 @@
         .d-ans { color: var(--sage-dark); font-weight: 800; } 
         .d-you { color: var(--error); font-weight: 800; } 
         
+        /* Leaderboard Specific layout styling fixes */
+        .leaderboard-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: var(--paper); border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; text-align: left; }
+        .leaderboard-user { font-weight: 700; color: var(--text); }
+        .leaderboard-score { font-weight: 800; color: var(--sage-dark); }
+        .leaderboard-meta { font-size: 0.75rem; color: var(--text-light); margin-left: 10px; }
+
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; z-index: 10000; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
         
         ::-webkit-scrollbar { width: 8px; } 
@@ -380,7 +387,7 @@
                     <div class="score-num" id="res-score">0.0</div> 
                 </div> 
 
-                <button class="btn" id="re-fetch-leaderboard-btn" onclick="triggerLeaderboardLoad()" style="background:var(--sage-dark); margin-bottom:20px;">🏆 View Global Leaderboard</button>
+                <button class="btn" id="re-fetch-leaderboard-btn" onclick="triggerLeaderboardLoad()" style="background:var(--sage-dark); margin-bottom:20px;">🏆 View Global Leaderboard</button> 
                 
                 <div class="stats-grid"> 
                     <div class="stat-card" onclick="showDetails('correct')"><span class="stat-val" style="color:var(--sage)" id="res-correct">0</span><span class="stat-lbl">Right</span></div> 
@@ -393,11 +400,11 @@
                     <div class="details-grid" id="details-list"></div> 
                 </div> 
 
-                <div class="leaderboard-panel" id="leaderboard-panel">
-                    <div class="details-title" id="leaderboard-title" style="color:var(--sage-dark);">Live Rankings 🏆</div>
-                    <div id="leaderboard-summary-box"></div>
-                    <div class="details-grid" id="leaderboard-list"></div>
-                </div>
+                <div class="leaderboard-panel" id="leaderboard-panel"> 
+                    <div class="details-title" id="leaderboard-title" style="color:var(--sage-dark);">Live Rankings 🏆</div> 
+                    <div id="leaderboard-summary-box"></div> 
+                    <div id="leaderboard-list" style="margin-top: 15px;"></div> 
+                </div> 
                 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;"> 
                     <button class="btn btn-outline" onclick="reviewExam()">Review Sheet</button> 
@@ -448,7 +455,7 @@
         ]; 
         let currentMoodIdx = 0; 
         
-        const funEmojis = ['🎯', '🚀', '🧠', '🦁', '🔥', '🦉', '🦊', '⚡', '🏆', '💎', '🥋', '🦅', '⚔️', '🌟'];
+        const funEmojis = ['🎯', '🚀', '🧠', '🦁', '🔥', '🦉', '🦊', '⚡', '🏆', '💎', '🥋', '🦅', '⚔️', '🌟']; 
 
         function cycleMood() { 
             currentMoodIdx = (currentMoodIdx + 1) % moods.length; 
@@ -508,7 +515,7 @@
         function startExamWithUsername() { 
             let username = document.getElementById('username-input').value.trim(); 
             if (!username) return showToast("Please enter a username"); 
-            const randomEmoji = funEmojis[Math.floor(Math.random() * funEmojis.length)];
+            const randomEmoji = funEmojis[Math.floor(Math.random() * funEmojis.length)]; 
             exam.username = `${username} ${randomEmoji}`; 
             document.getElementById('username-overlay').style.display = 'none'; 
             initApp(); 
@@ -650,11 +657,10 @@
             document.getElementById('res-skipped').innerText = skipped; 
             
             document.getElementById('details-panel').style.display = 'none'; 
-            document.getElementById('leaderboard-panel').style.display = 'none';
+            document.getElementById('leaderboard-panel').style.display = 'none'; 
             document.getElementById('result-username').innerText = '@ ' + exam.username; 
             
-            // Hide the leaderboard toggle button if it's a manual custom layout with no firebase link tracking
-            document.getElementById('re-fetch-leaderboard-btn').style.display = exam.mockId ? 'flex' : 'none';
+            document.getElementById('re-fetch-leaderboard-btn').style.display = exam.mockId ? 'flex' : 'none'; 
 
             switchSection('result-section'); 
 
@@ -664,8 +670,7 @@
         } 
         
         function showDetails(type) { 
-            // Close leaderboard module if open to avoid visual noise
-            document.getElementById('leaderboard-panel').style.display = 'none';
+            document.getElementById('leaderboard-panel').style.display = 'none'; 
 
             const panel = document.getElementById('details-panel'); 
             const title = document.getElementById('details-title'); 
@@ -695,13 +700,12 @@
             } 
         } 
 
-        function triggerLeaderboardLoad() {
-            // Close question list to clear layout screen focus
-            document.getElementById('details-panel').style.display = 'none';
-            if(window.fetchLeaderboard && exam.mockId) {
-                window.fetchLeaderboard(exam.mockId);
-            }
-        }
+        function triggerLeaderboardLoad() { 
+            document.getElementById('details-panel').style.display = 'none'; 
+            if(window.fetchLeaderboard && exam.mockId) { 
+                window.fetchLeaderboard(exam.mockId); 
+            } 
+        } 
         
         function reviewExam() { 
             switchSection('omr-section'); 
@@ -713,7 +717,7 @@
         function backToDashboard() { 
             switchSection('result-section'); 
             document.getElementById('timer-wrapper').style.display = 'flex'; 
-            document.getElementById('action-buttons').style.grid = 'grid'; 
+            document.getElementById('action-buttons').style.display = 'grid'; 
             document.getElementById('back-to-dash-btn').style.display = 'none'; 
         } 
     </script> 
@@ -803,4 +807,51 @@
                 const q = query( 
                     collection(db, "scores"), 
                     where("mockId", "==", mockId), 
-                    orderBy("
+                    orderBy("score", "desc")
+                ); 
+                
+                const querySnapshot = await getDocs(q);
+                if (querySnapshot.empty) {
+                    lGrid.innerHTML = '<i>No ranks found yet. Be the first!</i>';
+                    summaryBox.innerText = "";
+                    return;
+                }
+
+                let rank = 1;
+                let rowsHtml = [];
+                
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const min = Math.floor(data.timeTaken / 60).toString().padStart(2, '0');
+                    const sec = (data.timeTaken % 60).toString().padStart(2, '0');
+                    
+                    rowsHtml.push(`
+                        <div class="leaderboard-row">
+                            <div>
+                                <span class="leaderboard-user">#${rank} ${data.username}</span>
+                                <span class="leaderboard-meta">⏱ ${min}:${sec} (R:${data.right} W:${data.wrong})</span>
+                            </div>
+                            <div class="leaderboard-score">${data.score.toFixed(1)}</div>
+                        </div>
+                    `);
+                    rank++;
+                });
+
+                summaryBox.innerText = `Total Submissions: ${querySnapshot.size}`;
+                lGrid.innerHTML = rowsHtml.join('');
+            } catch (error) { 
+                console.error(error); 
+                lGrid.innerHTML = '<i style="color:var(--error)">Failed to load data. Ensure Firestore index is built.</i>'; 
+            } 
+        } 
+
+        // Bind core functions to global window scope so HTML buttons can fire them
+        window.publishNewMock = publishNewMock;
+        window.saveScoreToCloud = saveScoreToCloud;
+        window.fetchLeaderboard = fetchLeaderboard;
+
+        // Auto run parameter check on page view load
+        checkUrlParams();
+    </script> 
+</body> 
+</html>
