@@ -7,27 +7,7 @@
     <title>Floral OMR Pro | Made by Sunny</title> 
     <style> 
         :root { 
-            /* Default: Forest Breeze (Light) */ 
-            --paper: #FDFBF7; 
-            --sage: #8A9A5B; 
-            --sage-light: #A7B486; 
-            --sage-dark: #6B7A45; 
-            --blush: #E2A79D; 
-            --clay: #D4A373; 
-            --text: #3D4035; 
-            --text-light: #7A7D71; 
-            --border: #E8E4D9; 
-            --white: #FFFFFF; 
-            --error: #E07A5F; 
-            --accent: #F4A261; 
-            --bg: #F4F1EA; 
-            --overlay-bg: rgba(253, 251, 247, 0.95); 
-            --bubble-idle: #FFFFFF; 
-            --btn-text: #FFFFFF; 
-        } 
-        
-        /* 1. Midnight Glow (Dark) */ 
-        body.mood-midnight { 
+            /* Default Set to Midnight Glow (Dark) */ 
             --paper: #1A1D1A; 
             --sage: #00FF88; 
             --sage-light: #58D68D; 
@@ -46,7 +26,27 @@
             --btn-text: #000000; 
         } 
         
-        /* 2. Sunset Serenity (Warm) */ 
+        /* Forest Breeze (Light) */ 
+        body.mood-forest { 
+            --paper: #FDFBF7; 
+            --sage: #8A9A5B; 
+            --sage-light: #A7B486; 
+            --sage-dark: #6B7A45; 
+            --blush: #E2A79D; 
+            --clay: #D4A373; 
+            --text: #3D4035; 
+            --text-light: #7A7D71; 
+            --border: #E8E4D9; 
+            --white: #FFFFFF; 
+            --error: #E07A5F; 
+            --accent: #F4A261; 
+            --bg: #F4F1EA; 
+            --overlay-bg: rgba(253, 251, 247, 0.95); 
+            --bubble-idle: #FFFFFF; 
+            --btn-text: #FFFFFF; 
+        } 
+        
+        /* Sunset Serenity (Warm) */ 
         body.mood-sunset { 
             --paper: #FFF5F2; 
             --sage: #FF7E5F; 
@@ -66,7 +66,7 @@
             --btn-text: #FFFFFF; 
         } 
         
-        /* 3. Deep Ocean (Cool) */ 
+        /* Deep Ocean (Cool) */ 
         body.mood-ocean { 
             --paper: #0F2027; 
             --sage: #00D2FF; 
@@ -86,7 +86,7 @@
             --btn-text: #000000; 
         } 
         
-        /* 4. Cyber Pulse (Neon) */ 
+        /* Cyber Pulse (Neon) */ 
         body.mood-cyber { 
             --paper: #0B0014; 
             --sage: #BF00FF; 
@@ -196,6 +196,31 @@
         .field-group { margin-bottom: 24px; } 
         label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: var(--sage-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; } 
         
+        /* Styled Checkbox Label Container */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            user-select: none;
+        }
+        .toggle-container input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--sage);
+        }
+        .toggle-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
         input[type="text"], textarea, input[type="number"] { 
             width: 100%; padding: 15px; border: 2px solid var(--border); border-radius: 14px; 
             background: var(--white); color: var(--text); font-family: inherit; font-size: 1rem; transition: all 0.3s; 
@@ -288,7 +313,6 @@
             letter-spacing: 0.5px; 
         } 
 
-        /* Separate container dashboards */
         .details-panel { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: left; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); } 
         .leaderboard-panel { background: var(--white); border: 2px dashed var(--sage); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,0.02); }
         
@@ -301,7 +325,6 @@
         .d-ans { color: var(--sage-dark); font-weight: 800; } 
         .d-you { color: var(--error); font-weight: 800; } 
         
-        /* Leaderboard Specific layout styling fixes */
         .leaderboard-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: var(--paper); border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; text-align: left; }
         .leaderboard-user { font-weight: 700; color: var(--text); }
         .leaderboard-score { font-weight: 800; color: var(--sage-dark); }
@@ -318,14 +341,14 @@
         #back-to-dash-btn:hover { background: var(--white); color: var(--sage-dark); border-color: var(--sage); transform: scale(1.05); } 
     </style> 
 </head> 
-<body class="mood-forest"> 
+<body class="mood-midnight"> 
     
     <svg class="leaf-bg leaf-1" viewBox="0 0 200 200" fill="currentColor"><path d="M40,100 Q40,40 100,40 T160,100 T100,160 T40,100"/></svg> 
     <svg class="leaf-bg leaf-2" viewBox="0 0 200 200" fill="currentColor"><path d="M40,100 Q40,40 100,40 T160,100 T100,160 T40,100"/></svg> 
     
     <div id="watermark">Made by Sunny✨<br><small>(With Gemini's Help)</small></div> 
     
-    <button class="mood-toggle" id="mood-btn" onclick="cycleMood()" title="Change Mood">🌿</button> 
+    <button class="mood-toggle" id="mood-btn" onclick="cycleMood()" title="Change Mood">🌌</button> 
     
     <div class="app-container" id="main-app"> 
         <h1>Floral OMR Pro</h1> 
@@ -341,6 +364,13 @@
                 <div class="field-group"><label>Correct (+)</label><input type="number" id="mark-plus" value="4" step="1"></div> 
                 <div class="field-group"><label>Wrong (-)</label><input type="number" id="mark-minus" value="1" step="0.5"></div> 
             </div> 
+            
+            <!-- Pause Analytics Privacy Control -->
+            <label class="toggle-container">
+                <input type="checkbox" id="show-pause-stats" checked>
+                <span class="toggle-text">Show Right/Wrong metrics on Pause Screen</span>
+            </label>
+
             <button class="btn" onclick="showUsernamePopup()">Begin Examination</button> 
             <button class="btn btn-outline" onclick="publishNewMock()" style="margin-top: 15px;">✨ Create & Share Mock Link</button> 
         </div> 
@@ -362,9 +392,10 @@
                 <div class="pause-content-box"> 
                     <h2 style="color: var(--sage-dark); margin-top: 0;">Exam Paused 🌿</h2> 
                     <div class="pause-stats-grid"> 
-                        <div class="p-stat"><span class="stat-val" style="color:var(--sage)" id="p-right">0</span><span class="stat-lbl">Right</span></div> 
-                        <div class="p-stat"><span class="stat-val" style="color:var(--error)" id="p-wrong">0</span><span class="stat-lbl">Wrong</span></div> 
-                        <div class="p-stat"><span class="stat-val" id="p-skipped">0</span><span class="stat-lbl">Skipped</span></div> 
+                        <!-- These boxes will conditionally toggle text output visibility dynamically -->
+                        <div class="p-stat" id="pause-box-right"><span class="stat-val" style="color:var(--sage)" id="p-right">0</span><span class="stat-lbl">Right</span></div> 
+                        <div class="p-stat" id="pause-box-wrong"><span class="stat-val" style="color:var(--error)" id="p-wrong">0</span><span class="stat-lbl">Wrong</span></div> 
+                        <div class="p-stat" id="pause-box-skipped"><span class="stat-val" id="p-skipped">0</span><span class="stat-lbl">Skipped</span></div> 
                     </div> 
                     <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 25px;">Content hidden for integrity. Resume when ready.</p> 
                     <button class="btn btn-outline" style="width: auto; margin: 0 auto;" onclick="togglePause()">Resume</button> 
@@ -443,12 +474,14 @@
             elapsed: 0, 
             isPaused: false, 
             timerId: null, 
-            mockId: null 
+            mockId: null,
+            showStatsOnPause: true /* Captured from custom control toggle selection */
         }; 
 
+        // Ordered Array with Midnight Glow listed first
         const moods = [ 
+            { id: 'midnight', emoji: '🌌' },
             { id: 'forest', emoji: '🌿' }, 
-            { id: 'midnight', emoji: '🌌' }, 
             { id: 'sunset', emoji: '🌅' }, 
             { id: 'ocean', emoji: '🌊' }, 
             { id: 'cyber', emoji: '⚡' } 
@@ -548,6 +581,9 @@
             exam.plus = parseFloat(document.getElementById('mark-plus').value) || 0; 
             exam.minus = Math.abs(parseFloat(document.getElementById('mark-minus').value)) || 0; 
             
+            // Capture configuration value before rendering
+            exam.showStatsOnPause = document.getElementById('show-pause-stats').checked;
+            
             renderOMR(); 
             startTimer(); 
             switchSection('omr-section'); 
@@ -610,9 +646,25 @@
                     let u = exam.userAns[i]; 
                     if (!u) s++; else if (u === q.ans) r++; else w++; 
                 }); 
+                
+                // Set text values
                 document.getElementById('p-right').innerText = r; 
                 document.getElementById('p-wrong').innerText = w; 
                 document.getElementById('p-skipped').innerText = s; 
+                
+                // Apply layout conditions based on the user selection toggle preference
+                if(exam.showStatsOnPause) {
+                    document.getElementById('pause-box-right').style.display = 'block';
+                    document.getElementById('pause-box-wrong').style.display = 'block';
+                    // Rebalance layout grid styles
+                    document.querySelector('.pause-stats-grid').style.gridTemplateColumns = '1fr 1fr 1fr';
+                } else {
+                    document.getElementById('pause-box-right').style.display = 'none';
+                    document.getElementById('pause-box-wrong').style.display = 'none';
+                    // Center the isolated remaining item
+                    document.querySelector('.pause-stats-grid').style.gridTemplateColumns = '1fr';
+                }
+
                 overlay.style.display = 'flex'; 
                 container.classList.add('is-paused'); 
                 btn.innerText = "▶️"; 
@@ -810,48 +862,46 @@
                     orderBy("score", "desc")
                 ); 
                 
-                const querySnapshot = await getDocs(q);
-                if (querySnapshot.empty) {
-                    lGrid.innerHTML = '<i>No ranks found yet. Be the first!</i>';
-                    summaryBox.innerText = "";
-                    return;
-                }
+                const querySnapshot = await getDocs(q); 
+                if (querySnapshot.empty) { 
+                    lGrid.innerHTML = '<i>No ranks found yet. Be the first!</i>'; 
+                    summaryBox.innerText = ""; 
+                    return; 
+                } 
 
-                let rank = 1;
-                let rowsHtml = [];
+                let rank = 1; 
+                let rowsHtml = []; 
                 
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    const min = Math.floor(data.timeTaken / 60).toString().padStart(2, '0');
-                    const sec = (data.timeTaken % 60).toString().padStart(2, '0');
+                querySnapshot.forEach((doc) => { 
+                    const data = doc.data(); 
+                    const min = Math.floor(data.timeTaken / 60).toString().padStart(2, '0'); 
+                    const sec = (data.timeTaken % 60).toString().padStart(2, '0'); 
                     
-                    rowsHtml.push(`
-                        <div class="leaderboard-row">
-                            <div>
-                                <span class="leaderboard-user">#${rank} ${data.username}</span>
-                                <span class="leaderboard-meta">⏱ ${min}:${sec} (R:${data.right} W:${data.wrong})</span>
-                            </div>
-                            <div class="leaderboard-score">${data.score.toFixed(1)}</div>
-                        </div>
-                    `);
-                    rank++;
-                });
+                    rowsHtml.push(` 
+                        <div class="leaderboard-row"> 
+                            <div> 
+                                <span class="leaderboard-user">#${rank} ${data.username}</span> 
+                                <span class="leaderboard-meta">⏱ ${min}:${sec} (R:${data.right} W:${data.wrong})</span> 
+                            </div> 
+                            <div class="leaderboard-score">${data.score.toFixed(1)}</div> 
+                        </div> 
+                    `); 
+                    rank++; 
+                }); 
 
-                summaryBox.innerText = `Total Submissions: ${querySnapshot.size}`;
-                lGrid.innerHTML = rowsHtml.join('');
+                summaryBox.innerText = `Total Submissions: ${querySnapshot.size}`; 
+                lGrid.innerHTML = rowsHtml.join(''); 
             } catch (error) { 
                 console.error(error); 
                 lGrid.innerHTML = '<i style="color:var(--error)">Failed to load data. Ensure Firestore index is built.</i>'; 
             } 
         } 
 
-        // Bind core functions to global window scope so HTML buttons can fire them
-        window.publishNewMock = publishNewMock;
-        window.saveScoreToCloud = saveScoreToCloud;
-        window.fetchLeaderboard = fetchLeaderboard;
+        window.publishNewMock = publishNewMock; 
+        window.saveScoreToCloud = saveScoreToCloud; 
+        window.fetchLeaderboard = fetchLeaderboard; 
 
-        // Auto run parameter check on page view load
-        checkUrlParams();
+        checkUrlParams(); 
     </script> 
 </body> 
 </html>
