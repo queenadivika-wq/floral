@@ -121,18 +121,12 @@
             transition: background-color 0.6s cubic-bezier(0.4, 0, 0.2, 1); 
         } 
         
-        /* Control Panel Placement at Top Right */
-        .top-controls {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 1000;
-            display: flex;
-            gap: 12px;
-        }
-
-        /* Generic Circular Control Icon Button Styling */ 
-        .control-btn { 
+        /* Mood Toggle Button */ 
+        .mood-toggle { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 1000; 
             width: 50px; 
             height: 50px; 
             border-radius: 50%; 
@@ -142,14 +136,12 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            font-size: 1.2rem; 
-            font-weight: bold;
-            color: var(--text);
+            font-size: 1.4rem; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
         } 
-        .control-btn:hover { transform: scale(1.1) rotate(10deg); box-shadow: 0 8px 25px rgba(0,0,0,0.3); } 
-        .control-btn:active { transform: scale(0.9); } 
+        .mood-toggle:hover { transform: scale(1.1) rotate(15deg); box-shadow: 0 8px 25px rgba(0,0,0,0.3); } 
+        .mood-toggle:active { transform: scale(0.9); } 
         
         /* Decorative Background */ 
         .leaf-bg { position: fixed; z-index: -1; opacity: 0.12; pointer-events: none; transition: color 0.6s ease; } 
@@ -203,29 +195,30 @@
         .field-group { margin-bottom: 24px; } 
         label { display: block; margin-bottom: 8px; font-size: 0.8rem; color: var(--sage-dark); font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; } 
         
-        .toggle-container { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            cursor: pointer; 
-            margin-bottom: 24px; 
-            padding: 12px; 
-            background: rgba(0, 0, 0, 0.15); 
-            border: 1px solid var(--border); 
-            border-radius: 12px; 
-            user-select: none; 
-        } 
-        .toggle-container input[type="checkbox"] { 
-            width: 18px; 
-            height: 18px; 
-            cursor: pointer; 
-            accent-color: var(--sage); 
-        } 
-        .toggle-text { 
-            font-size: 0.85rem; 
-            font-weight: 600; 
-            color: var(--text); 
-        } 
+        /* Styled Checkbox Label Container */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            margin-bottom: 24px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            user-select: none;
+        }
+        .toggle-container input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: var(--sage);
+        }
+        .toggle-text {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text);
+        }
 
         input[type="text"], textarea, input[type="number"] { 
             width: 100%; padding: 15px; border: 2px solid var(--border); border-radius: 14px; 
@@ -304,21 +297,37 @@
         .stat-val { display: block; font-size: 1.6rem; font-weight: 900; } 
         .stat-lbl { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-light); margin-top: 6px; pointer-events: none; } 
         
+        .participant-badge { 
+            background: var(--bg); 
+            border: 1px solid var(--border); 
+            padding: 6px 16px; 
+            border-radius: 20px; 
+            font-size: 0.75rem; 
+            font-weight: 700; 
+            color: var(--text-light); 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            margin-bottom: 15px; 
+            letter-spacing: 0.5px; 
+        } 
+
         .details-panel { background: var(--white); border: 1.5px solid var(--border); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: left; box-shadow: inset 0 2px 10px rgba(0,0,0,0.05); } 
-        .leaderboard-panel { background: var(--white); border: 2px dashed var(--sage); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,0.02); } 
+        .leaderboard-panel { background: var(--white); border: 2px dashed var(--sage); border-radius: 20px; padding: 25px; margin-bottom: 20px; display: none; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,0.02); }
         
         .details-title { font-weight: 800; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 18px; color: var(--sage-dark); border-bottom: 2px solid var(--border); padding-bottom: 8px; } 
         
         .details-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; } 
         .detail-chip { background: var(--paper); border: 1.5px solid var(--border); padding: 12px; border-radius: 14px; font-size: 0.85rem; display: flex; flex-direction: column; gap: 4px; transition: 0.2s; } 
+        .detail-chip:hover { border-color: var(--text-light); } 
         .detail-chip b { color: var(--text); font-size: 1rem; } 
         .d-ans { color: var(--sage-dark); font-weight: 800; } 
         .d-you { color: var(--error); font-weight: 800; } 
         
-        .leaderboard-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: var(--paper); border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; text-align: left; } 
-        .leaderboard-user { font-weight: 700; color: var(--text); } 
-        .leaderboard-score { font-weight: 800; color: var(--sage-dark); } 
-        .leaderboard-meta { font-size: 0.75rem; color: var(--text-light); margin-left: 10px; } 
+        .leaderboard-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; background: var(--paper); border: 1.5px solid var(--border); border-radius: 12px; margin-bottom: 8px; font-size: 0.9rem; text-align: left; }
+        .leaderboard-user { font-weight: 700; color: var(--text); }
+        .leaderboard-score { font-weight: 800; color: var(--sage-dark); }
+        .leaderboard-meta { font-size: 0.75rem; color: var(--text-light); margin-left: 10px; }
 
         #toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 12px 28px; border-radius: 50px; font-size: 0.95rem; z-index: 10000; opacity: 0; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); pointer-events: none; font-weight: 600; box-shadow: 0 10px 30px rgba(0,0,0,0.3); } 
         
@@ -338,53 +347,39 @@
     
     <div id="watermark">Made by Sunny✨<br><small>(With Gemini's Help)</small></div> 
     
-    <!-- Top Row Controls Container -->
-    <div class="top-controls">
-        <button class="control-btn" id="lang-btn" onclick="toggleLanguage()" title="Change Language">हिं</button>
-        <button class="control-btn" id="mood-btn" onclick="cycleMood()" title="Change Mood">🌌</button> 
-    </div>
+    <button class="mood-toggle" id="mood-btn" onclick="cycleMood()" title="Change Mood (थीम बदलें)">🌌</button> 
     
     <div class="app-container" id="main-app"> 
-        <h1 id="txt-app-title">Floral OMR Pro</h1> 
-        <div class="tagline" id="txt-tagline">The Art of Assessment</div> 
+        <h1>Floral OMR Pro</h1> 
+        <div class="tagline">The Art of Assessment (मूल्यांकन की कला)</div> 
         
-        <!-- SETUP SECTION -->
         <div id="setup-section" class="section active"> 
-            <div class="field-group">
-                <label id="lbl-subject">Exam Subject</label>
-                <input type="text" id="test-name" placeholder="e.g. Advanced Botany">
-            </div> 
+            <div class="field-group"><label>Exam Subject (परीक्षा का विषय)</label><input type="text" id="test-name" placeholder="e.g. Advanced Botany (उदा. सामान्य ज्ञान या विज्ञान)"></div> 
             <div class="field-group"> 
-                <label id="lbl-anskey">Answer Key</label> 
-                <textarea id="answer-key" placeholder="Examples:&#10;22A, B, C, D (Starts at 22, then 23, 24...)&#10;1A, 5C, 10D (Specific spacing)&#10;ABCD (Starts from 1 automatically)" rows="4"></textarea> 
+                <label>Answer Key (उत्तर कुंजी)</label> 
+                <textarea id="answer-key" placeholder="Examples (उदाहरण):&#10;22A, B, C, D (Starts at 22, then 23, 24...)&#10;1A, 5C, 10D (Specific spacing)&#10;ABCD (Starts from 1 automatically)" rows="4"></textarea> 
             </div> 
             <div class="grid-2"> 
-                <div class="field-group">
-                    <label id="lbl-plus">Correct (+)</label>
-                    <input type="number" id="mark-plus" value="4" step="1">
-                </div> 
-                <div class="field-group">
-                    <label id="lbl-minus">Wrong (-)</label>
-                    <input type="number" id="mark-minus" value="1" step="0.5">
-                </div> 
+                <div class="field-group"><label>Correct (+ अंक)</label><input type="number" id="mark-plus" value="4" step="1"></div> 
+                <div class="field-group"><label>Wrong (- अंक)</label><input type="number" id="mark-minus" value="1" step="0.5"></div> 
             </div> 
             
-            <label class="toggle-container"> 
-                <input type="checkbox" id="show-pause-stats" checked> 
-                <span class="toggle-text" id="lbl-pause-switch">Show Right/Wrong metrics on Pause Screen</span> 
-            </label> 
+            <!-- Pause Analytics Privacy Control -->
+            <label class="toggle-container">
+                <input type="checkbox" id="show-pause-stats" checked>
+                <span class="toggle-text">Show Right/Wrong metrics on Pause Screen (पॉज़ स्क्रीन पर सही/गलत स्कोर दिखाएं)</span>
+            </label>
 
-            <button class="btn" id="btn-begin" onclick="showUsernamePopup()">Begin Examination</button> 
-            <button class="btn btn-outline" id="btn-share-mock" onclick="publishNewMock()" style="margin-top: 15px;">✨ Create & Share Mock Link</button> 
+            <button class="btn" onclick="showUsernamePopup()">Begin Examination (परीक्षा शुरू करें)</button> 
+            <button class="btn btn-outline" onclick="publishNewMock()" style="margin-top: 15px;">✨ Create & Share Mock Link (मॉक लिंक बनाएं और शेयर करें)</button> 
         </div> 
         
-        <!-- WORKING OMR EXAM SECTION -->
         <div id="omr-section" class="section"> 
-            <button id="back-to-dash-btn" onclick="backToDashboard()">← Back to Dashboard</button> 
+            <button id="back-to-dash-btn" onclick="backToDashboard()">← Back to Dashboard (डैशबोर्ड पर वापस जाएं)</button> 
             <div class="omr-header"> 
                 <div> 
-                    <div id="display-test-name" style="font-weight: 800; color: var(--sage-dark); font-size: 1.1rem;">Subject</div> 
-                    <div style="font-size: 0.8rem; color: var(--text-light);"><span id="q-count">0</span> <span id="txt-questions-count-lbl">Questions</span></div> 
+                    <div id="display-test-name" style="font-weight: 800; color: var(--sage-dark); font-size: 1.1rem;">Subject (विषय)</div> 
+                    <div style="font-size: 0.8rem; color: var(--text-light);"><span id="q-count">0</span> Questions (प्रश्न)</div> 
                 </div> 
                 <div class="timer-box" id="timer-wrapper"> 
                     <div class="timer-val" id="timer-display">00:00</div> 
@@ -394,76 +389,74 @@
             
             <div id="pause-overlay" class="overlay"> 
                 <div class="pause-content-box"> 
-                    <h2 style="color: var(--sage-dark); margin-top: 0;" id="txt-paused-title">Exam Paused 🌿</h2> 
+                    <h2 style="color: var(--sage-dark); margin-top: 0;">Exam Paused (परीक्षा रुकी हुई है) 🌿</h2> 
                     <div class="pause-stats-grid"> 
-                        <div class="p-stat" id="pause-box-right"><span class="stat-val" style="color:var(--sage)" id="p-right">0</span><span class="stat-lbl" id="lbl-p-right">Right</span></div> 
-                        <div class="p-stat" id="pause-box-wrong"><span class="stat-val" style="color:var(--error)" id="p-wrong">0</span><span class="stat-lbl" id="lbl-p-wrong">Wrong</span></div> 
-                        <div class="p-stat" id="pause-box-skipped"><span class="stat-val" id="p-skipped">0</span><span class="stat-lbl" id="lbl-p-skip">Skipped</span></div> 
+                        <!-- These boxes will conditionally toggle text output visibility dynamically -->
+                        <div class="p-stat" id="pause-box-right"><span class="stat-val" style="color:var(--sage)" id="p-right">0</span><span class="stat-lbl">Right (सही)</span></div> 
+                        <div class="p-stat" id="pause-box-wrong"><span class="stat-val" style="color:var(--error)" id="p-wrong">0</span><span class="stat-lbl">Wrong (गलत)</span></div> 
+                        <div class="p-stat" id="pause-box-skipped"><span class="stat-val" id="p-skipped">0</span><span class="stat-lbl">Skipped (छोड़ा)</span></div> 
                     </div> 
-                    <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 25px;" id="txt-paused-desc">Content hidden for integrity. Resume when ready.</p> 
-                    <button class="btn btn-outline" id="btn-resume" style="width: auto; margin: 0 auto;" onclick="togglePause()">Resume</button> 
+                    <p style="color: var(--text-light); font-size: 0.85rem; margin-bottom: 25px;">Content hidden for integrity. Resume when ready. (ईमानदारी बनाए रखने के लिए कंटेंट छिपा दिया गया है। तैयार होने पर रीज़्यूम करें।)</p> 
+                    <button class="btn btn-outline" style="width: auto; margin: 0 auto;" onclick="togglePause()">Resume (आगे बढ़ें)</button> 
                 </div> 
             </div> 
             
             <div class="q-scroll" id="q-container"></div> 
             
             <div id="action-buttons" style="display:grid; grid-template-columns: 1fr 1fr; gap:15px;"> 
-                <button class="btn btn-outline" id="btn-discard" onclick="handleDiscardClick()">Discard</button> 
-                <button class="btn" id="btn-submit" onclick="confirmFinish()">Submit</button> 
+                <button class="btn btn-outline" onclick="if(confirm('Discard this exam? (क्या आप इस परीक्षा को रद्द करना चाहते हैं?)')) location.reload();">Discard (रद्द करें)</button> 
+                <button class="btn" onclick="confirmFinish()">Submit (जमा करें)</button> 
             </div> 
         </div> 
         
-        <!-- POST EXAM RESULTS VIEW SECTION -->
         <div id="result-section" class="section"> 
             <div class="results-card"> 
                 <div id="result-username" style="font-size:1.1rem; font-weight:700; margin-bottom:5px; color:var(--sage-dark);"></div> 
                 <div class="score-display"> 
-                    <div style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; color: var(--text-light); font-weight: 700;" id="lbl-final-score">Final Score</div> 
+                    <div style="text-transform: uppercase; font-size: 0.75rem; letter-spacing: 2px; color: var(--text-light); font-weight: 700;">Final Score (कुल अंक)</div> 
                     <div class="score-num" id="res-score">0.0</div> 
                 </div> 
 
-                <button class="btn" id="re-fetch-leaderboard-btn" onclick="triggerLeaderboardLoad()" style="background:var(--sage-dark); margin-bottom:20px;">🏆 View Global Leaderboard</button> 
+                <button class="btn" id="re-fetch-leaderboard-btn" onclick="triggerLeaderboardLoad()" style="background:var(--sage-dark); margin-bottom:20px;">🏆 View Global Leaderboard (ग्लोबल लीडरबोर्ड देखें)</button> 
                 
                 <div class="stats-grid"> 
-                    <div class="stat-card" onclick="showDetails('correct')"><span class="stat-val" style="color:var(--sage)" id="res-correct">0</span><span class="stat-lbl" id="lbl-res-right">Right</span></div> 
-                    <div class="stat-card" onclick="showDetails('wrong')"><span class="stat-val" style="color:var(--error)" id="res-wrong">0</span><span class="stat-lbl" id="lbl-res-wrong">Wrong</span></div> 
-                    <div class="stat-card" onclick="showDetails('skipped')"><span class="stat-val" id="res-skipped">0</span><span class="stat-lbl" id="lbl-res-skip">Skipped</span></div> 
+                    <div class="stat-card" onclick="showDetails('correct')"><span class="stat-val" style="color:var(--sage)" id="res-correct">0</span><span class="stat-lbl">Right (सही)</span></div> 
+                    <div class="stat-card" onclick="showDetails('wrong')"><span class="stat-val" style="color:var(--error)" id="res-wrong">0</span><span class="stat-lbl">Wrong (गलत)</span></div> 
+                    <div class="stat-card" onclick="showDetails('skipped')"><span class="stat-val" id="res-skipped">0</span><span class="stat-lbl">Skipped (छोड़ा)</span></div> 
                 </div> 
                 
                 <div class="details-panel" id="details-panel"> 
-                    <div class="details-title" id="details-title">Question Breakdown</div> 
+                    <div class="details-title" id="details-title">Question Breakdown (प्रश्नों का विवरण)</div> 
                     <div class="details-grid" id="details-list"></div> 
                 </div> 
 
                 <div class="leaderboard-panel" id="leaderboard-panel"> 
-                    <div class="details-title" id="leaderboard-title" style="color:var(--sage-dark);">Live Rankings 🏆</div> 
+                    <div class="details-title" id="leaderboard-title" style="color:var(--sage-dark);">Live Rankings (लाइव रैंकिंग) 🏆</div> 
                     <div id="leaderboard-summary-box"></div> 
                     <div id="leaderboard-list" style="margin-top: 15px;"></div> 
                 </div> 
                 
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:15px; margin-top:20px;"> 
-                    <button class="btn btn-outline" id="btn-review" onclick="reviewExam()">Review Sheet</button> 
-                    <button class="btn" id="btn-restart" onclick="location.reload()">Start New</button> 
+                    <button class="btn btn-outline" onclick="reviewExam()">Review Sheet (उत्तर पत्र जांचें)</button> 
+                    <button class="btn" onclick="location.reload()">Start New (नया शुरू करें)</button> 
                 </div> 
             </div> 
         </div> 
         
-        <!-- SUBMIT CONFIRM MODAL OVERLAY -->
         <div id="confirm-overlay" class="overlay"> 
-            <h2 style="color: var(--sage-dark);" id="lbl-confirm-title">Submit Paper?</h2> 
+            <h2 style="color: var(--sage-dark);">Submit Paper? (पेपर सबमिट करें?)</h2> 
             <p id="confirm-msg" style="margin-bottom: 25px;">You have 0 questions remaining.</p> 
             <div style="display:flex; gap:15px; width:100%;"> 
-                <button class="btn btn-outline" id="btn-confirm-back" onclick="document.getElementById('confirm-overlay').style.display='none'">Back</button> 
-                <button class="btn" id="btn-confirm-ok" onclick="processResults()">Confirm</button> 
+                <button class="btn btn-outline" onclick="document.getElementById('confirm-overlay').style.display='none'">Back (पीछे जाएं)</button> 
+                <button class="btn" onclick="processResults()">Confirm (पक्का करें)</button> 
             </div> 
         </div> 
     </div> 
 
-    <!-- POPUPS ENTRIES INITIALIZATIONS -->
     <div id="username-overlay" class="overlay"> 
-        <h2 style="color: var(--sage-dark);" id="lbl-username-title">Enter Username</h2> 
-        <input type="text" id="username-input" placeholder="Enter your username" style="margin:20px 0;"> 
-        <button class="btn" id="btn-username-continue" onclick="startExamWithUsername()">Continue</button> 
+        <h2 style="color: var(--sage-dark);">Enter Username (यूज़रनेम डालें)</h2> 
+        <input type="text" id="username-input" placeholder="Enter your username (अपना यूज़रनेम लिखें)" style="margin:20px 0;"> 
+        <button class="btn" onclick="startExamWithUsername()">Continue (आगे बढ़ें)</button> 
     </div> 
     
     <div id="toast"></div> 
@@ -480,145 +473,13 @@
             elapsed: 0, 
             isPaused: false, 
             timerId: null, 
-            mockId: null, 
-            showStatsOnPause: true 
+            mockId: null,
+            showStatsOnPause: true /* Captured from custom control toggle selection */
         }; 
 
-        // Multi-Language Dictionary Setup
-        let currentLang = 'en'; 
-        const langPack = {
-            en: {
-                toggleBtn: "हिं",
-                appTitle: "Floral OMR Pro",
-                tagline: "The Art of Assessment",
-                lblSubject: "Exam Subject",
-                lblAnsKey: "Answer Key",
-                lblPlus: "Correct (+)",
-                lblMinus: "Wrong (-)",
-                lblPauseSwitch: "Show Right/Wrong metrics on Pause Screen",
-                btnBegin: "Begin Examination",
-                btnShareMock: "✨ Create & Share Mock Link",
-                txtQuestions: "Questions",
-                txtPausedTitle: "Exam Paused 🌿",
-                lblRight: "Right",
-                lblWrong: "Wrong",
-                lblSkip: "Skipped",
-                txtPausedDesc: "Content hidden for integrity. Resume when ready.",
-                btnResume: "Resume",
-                btnDiscard: "Discard",
-                btnSubmit: "Submit",
-                lblFinalScore: "Final Score",
-                btnLeaderboard: "🏆 View Global Leaderboard",
-                btnReview: "Review Sheet",
-                btnRestart: "Start New",
-                lblConfirmTitle: "Submit Paper?",
-                btnConfirmBack: "Back",
-                btnConfirmOk: "Confirm",
-                lblUsernameTitle: "Enter Username",
-                btnUsernameContinue: "Continue",
-                placeholderSubject: "e.g. Advanced Botany",
-                placeholderUsername: "Enter your username",
-                toastUsername: "Please enter a username",
-                toastAnsKey: "Enter your answer key first",
-                toastNoValidKey: "No valid answers (A-D) found.",
-                toastSynced: "Score synced to Live Rankings! 🏆",
-                confirmDiscard: "Discard this exam?",
-                leaderboardFetching: "Fetching scoreboard stats...",
-                leaderboardEmpty: "<i>No ranks found yet. Be the first!</i>",
-                leaderboardSubmissions: "Total Submissions: "
-            },
-            hi: {
-                toggleBtn: "EN",
-                appTitle: "फ़्लोरल ओ.एम.आर. प्रो",
-                tagline: "मूल्यांकन की कला",
-                lblSubject: "परीक्षा का विषय (Subject)",
-                lblAnsKey: "उत्तर कुंजी (Answer Key)",
-                lblPlus: "सही उत्तर (+)",
-                lblMinus: "गलत उत्तर (-)",
-                lblPauseSwitch: "पॉज़ (Pause) स्क्रीन पर सही/गलत स्कोर दिखाएं",
-                btnBegin: "परीक्षा शुरू करें",
-                btnShareMock: "✨ मॉक लिंक बनाएं और शेयर करें",
-                txtQuestions: "प्रश्न",
-                txtPausedTitle: "परीक्षा रुकी हुई है 🌿",
-                lblRight: "सही",
-                lblWrong: "गलत",
-                lblSkip: "छोड़े गए",
-                txtPausedDesc: "गोपनीयता के लिए सामग्री छिपाई गई है। तैयार होने पर रीज़्यूम करें।",
-                btnResume: "जारी रखें (Resume)",
-                btnDiscard: "रद्द करें (Discard)",
-                btnSubmit: "जमा करें (Submit)",
-                lblFinalScore: "कुल प्राप्तांक",
-                btnLeaderboard: "🏆 ग्लोबल लीडरबोर्ड देखें",
-                btnReview: "उत्तर पुस्तिका देखें",
-                btnRestart: "नया शुरू करें",
-                lblConfirmTitle: "पेपर जमा करें?",
-                btnConfirmBack: "वापस",
-                btnConfirmOk: "पुष्टि करें",
-                lblUsernameTitle: "अपना नाम दर्ज करें",
-                btnUsernameContinue: "आगे बढ़ें",
-                placeholderSubject: "उदाहरण: एडवांस्ड बॉटनी",
-                placeholderUsername: "अपना यूज़रनेम लिखें",
-                toastUsername: "कृपया एक यूज़रनेम दर्ज करें",
-                toastAnsKey: "पहले अपनी उत्तर कुंजी दर्ज करें",
-                toastNoValidKey: "कोई मान्य उत्तर (A-D) नहीं मिला।",
-                toastSynced: "स्कोर लाइव रैंकिंग में सिंक हो गया! 🏆",
-                confirmDiscard: "क्या आप इस परीक्षा को रद्द करना चाहते हैं?",
-                leaderboardFetching: "रैंकिंग डेटा लोड हो रहा है...",
-                leaderboardEmpty: "<i>अभी तक कोई रैंक नहीं मिली। पहले आप बनें!</i>",
-                leaderboardSubmissions: "कुल सबमिशन: "
-            }
-        };
-
-        function toggleLanguage() {
-            currentLang = (currentLang === 'en') ? 'hi' : 'en';
-            applyLanguage();
-        }
-
-        function applyLanguage() {
-            const p = langPack[currentLang];
-            
-            document.getElementById('lang-btn').innerText = p.toggleBtn;
-            document.getElementById('txt-app-title').innerText = p.appTitle;
-            document.getElementById('txt-tagline').innerText = p.tagline;
-            
-            document.getElementById('lbl-subject').innerText = p.lblSubject;
-            document.getElementById('lbl-anskey').innerText = p.lblAnsKey;
-            document.getElementById('lbl-plus').innerText = p.lblPlus;
-            document.getElementById('lbl-minus').innerText = p.lblMinus;
-            document.getElementById('lbl-pause-switch').innerText = p.lblPauseSwitch;
-            document.getElementById('btn-begin').innerText = p.btnBegin;
-            document.getElementById('btn-share-mock').innerText = p.btnShareMock;
-            
-            document.getElementById('test-name').placeholder = p.placeholderSubject;
-            document.getElementById('username-input').placeholder = p.placeholderUsername;
-
-            document.getElementById('txt-questions-count-lbl').innerText = p.txtQuestions;
-            document.getElementById('txt-paused-title').innerText = p.txtPausedTitle;
-            document.getElementById('lbl-p-right').innerText = p.lblRight;
-            document.getElementById('lbl-p-wrong').innerText = p.lblWrong;
-            document.getElementById('lbl-p-skip').innerText = p.lblSkip;
-            document.getElementById('txt-paused-desc').innerText = p.txtPausedDesc;
-            document.getElementById('btn-resume').innerText = p.btnResume;
-            document.getElementById('btn-discard').innerText = p.btnDiscard;
-            document.getElementById('btn-submit').innerText = p.btnSubmit;
-
-            document.getElementById('lbl-final-score').innerText = p.lblFinalScore;
-            document.getElementById('re-fetch-leaderboard-btn').innerText = p.btnLeaderboard;
-            document.getElementById('lbl-res-right').innerText = p.lblRight;
-            document.getElementById('lbl-res-wrong').innerText = p.lblWrong;
-            document.getElementById('lbl-res-skip').innerText = p.lblSkip;
-            document.getElementById('btn-review').innerText = p.btnReview;
-            document.getElementById('btn-restart').innerText = p.btnRestart;
-
-            document.getElementById('lbl-confirm-title').innerText = p.lblConfirmTitle;
-            document.getElementById('btn-confirm-back').innerText = p.btnConfirmBack;
-            document.getElementById('btn-confirm-ok').innerText = p.btnConfirmOk;
-            document.getElementById('lbl-username-title').innerText = p.lblUsernameTitle;
-            document.getElementById('btn-username-continue').innerText = p.btnUsernameContinue;
-        }
-
+        // Ordered Array with Midnight Glow listed first
         const moods = [ 
-            { id: 'midnight', emoji: '🌌' }, 
+            { id: 'midnight', emoji: '🌌' },
             { id: 'forest', emoji: '🌿' }, 
             { id: 'sunset', emoji: '🌅' }, 
             { id: 'ocean', emoji: '🌊' }, 
@@ -661,10 +522,7 @@
             }, 5000); 
         } 
         
-        window.onload = function() {
-            startWatermark();
-            applyLanguage(); 
-        }; 
+        window.onload = startWatermark; 
         
         function showToast(msg) { 
             const t = document.getElementById('toast'); 
@@ -688,7 +546,7 @@
 
         function startExamWithUsername() { 
             let username = document.getElementById('username-input').value.trim(); 
-            if (!username) return showToast(langPack[currentLang].toastUsername); 
+            if (!username) return showToast("Please enter a username (कृपया यूज़रनेम दर्ज करें)"); 
             const randomEmoji = funEmojis[Math.floor(Math.random() * funEmojis.length)]; 
             exam.username = `${username} ${randomEmoji}`; 
             document.getElementById('username-overlay').style.display = 'none'; 
@@ -697,7 +555,7 @@
 
         function initApp() { 
             let raw = document.getElementById('answer-key').value.toUpperCase(); 
-            if (!raw.trim()) return showToast(langPack[currentLang].toastAnsKey); 
+            if (!raw.trim()) return showToast("Enter your answer key first (पहले अपनी उत्तर कुंजी दर्ज करें)"); 
             let tokens = raw.split(/[\s,;]+/).filter(t => t.length > 0); 
             let parsedKeys = []; 
             let currentNum = 1; 
@@ -715,14 +573,15 @@
                 } 
             }); 
             
-            if (parsedKeys.length === 0) return showToast(langPack[currentLang].toastNoValidKey); 
+            if (parsedKeys.length === 0) return showToast("No valid answers (A-D) found. (कोई मान्य उत्तर (A-D) नहीं मिला।)"); 
             exam.keyMap = parsedKeys; 
-            exam.name = document.getElementById('test-name').value || (currentLang === 'en' ? "Unnamed Assessment" : "बिना नाम का टेस्ट"); 
+            exam.name = document.getElementById('test-name').value || "Unnamed Assessment (बिना नाम की परीक्षा)"; 
             exam.userAns = new Array(exam.keyMap.length).fill(null); 
             exam.plus = parseFloat(document.getElementById('mark-plus').value) || 0; 
             exam.minus = Math.abs(parseFloat(document.getElementById('mark-minus').value)) || 0; 
             
-            exam.showStatsOnPause = document.getElementById('show-pause-stats').checked; 
+            // Capture configuration value before rendering
+            exam.showStatsOnPause = document.getElementById('show-pause-stats').checked;
             
             renderOMR(); 
             startTimer(); 
@@ -735,7 +594,7 @@
             const container = document.getElementById('q-container'); 
             container.innerHTML = exam.keyMap.map((q, i) => ` 
                 <div class="q-row" id="row-${i}"> 
-                    <span class="skipped-badge">${currentLang === 'en' ? 'Skipped' : 'छोड़ा गया'}</span> 
+                    <span class="skipped-badge">Skipped (छोड़ा)</span> 
                     <div class="q-num">Q${q.num}</div> 
                     <div class="bubble-wrap"> 
                         ${['A', 'B', 'C', 'D'].map(opt => ` 
@@ -787,19 +646,23 @@
                     if (!u) s++; else if (u === q.ans) r++; else w++; 
                 }); 
                 
+                // Set text values
                 document.getElementById('p-right').innerText = r; 
                 document.getElementById('p-wrong').innerText = w; 
                 document.getElementById('p-skipped').innerText = s; 
                 
-                if(exam.showStatsOnPause) { 
-                    document.getElementById('pause-box-right').style.display = 'block'; 
-                    document.getElementById('pause-box-wrong').style.display = 'block'; 
-                    document.querySelector('.pause-stats-grid').style.gridTemplateColumns = '1fr 1fr 1fr'; 
-                } else { 
-                    document.getElementById('pause-box-right').style.display = 'none'; 
-                    document.getElementById('pause-box-wrong').style.display = 'none'; 
-                    document.querySelector('.pause-stats-grid').style.gridTemplateColumns = '1fr'; 
-                } 
+                // Apply layout conditions based on the user selection toggle preference
+                if(exam.showStatsOnPause) {
+                    document.getElementById('pause-box-right').style.display = 'block';
+                    document.getElementById('pause-box-wrong').style.display = 'block';
+                    // Rebalance layout grid styles
+                    document.querySelector('.pause-stats-grid').style.gridTemplateColumns = '1fr 1fr 1fr';
+                } else {
+                    document.getElementById('pause-box-right').style.display = 'none';
+                    document.getElementById('pause-box-wrong').style.display = 'none';
+                    // Center the isolated remaining item
+                    document.querySelector('.pause-stats-grid').style.gridTemplateColumns = '1fr';
+                }
 
                 overlay.style.display = 'flex'; 
                 container.classList.add('is-paused'); 
@@ -810,17 +673,9 @@
         
         function confirmFinish() { 
             const skipped = exam.userAns.filter(a => a === null).length; 
-            if(currentLang === 'en') {
-                document.getElementById('confirm-msg').innerText = `Finish now? ${skipped} questions are still empty.`; 
-            } else {
-                document.getElementById('confirm-msg').innerText = `पेपर सबमिट करें? ${skipped} प्रश्न अभी खाली हैं।`; 
-            }
+            document.getElementById('confirm-msg').innerText = `Finish now? ${skipped} questions are still empty. (क्या अभी समाप्त करना चाहते हैं? ${skipped} प्रश्न अभी भी खाली हैं।)`; 
             document.getElementById('confirm-overlay').style.display = 'flex'; 
         } 
-
-        function handleDiscardClick() {
-            if(confirm(langPack[currentLang].confirmDiscard)) location.reload();
-        }
         
         function processResults() { 
             clearInterval(exam.timerId); 
@@ -876,29 +731,24 @@
             exam.keyMap.forEach((q, i) => { 
                 let u = exam.userAns[i]; 
                 if (type === 'skipped' && !u) { 
-                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-ans">${currentLang==='en'?'Correct':'सही'}: ${q.ans}</span></div>`); 
+                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-ans">Correct (सही): ${q.ans}</span></div>`); 
                 } else if (type === 'correct' && u === q.ans) { 
-                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-ans">${currentLang==='en'?'Key':'कुंजी'}: ${q.ans}</span></div>`); 
+                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-ans">Key (उत्तर): ${q.ans}</span></div>`); 
                 } else if (type === 'wrong' && u && u !== q.ans) { 
-                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-you">${currentLang==='en'?'Picked':'चुना':'चुना'}: ${u}</span><span class="d-ans">${currentLang==='en'?'Key':'कुंजी'}: ${q.ans}</span></div>`); 
+                    htmlCards.push(`<div class="detail-chip"><b>Q${q.num}</b><span class="d-you">Picked (चुना): ${u}</span><span class="d-ans">Key (उत्तर): ${q.ans}</span></div>`); 
                 } 
             }); 
             
             panel.style.display = 'block'; 
+            let typeHindi = type === 'correct' ? 'सही' : (type === 'wrong' ? 'गलत' : 'छोड़ा गया');
             let color = type === 'correct' ? 'var(--sage)' : (type === 'wrong' ? 'var(--error)' : 'var(--text-light)'); 
-            
-            let typeLabel = type.toUpperCase();
-            if (currentLang === 'hi') {
-                typeLabel = type === 'correct' ? 'सही प्रश्न' : (type === 'wrong' ? 'गलत प्रश्न' : 'छोड़े गए प्रश्न');
-            }
-
-            title.innerHTML = `<span style="color: ${color}">${typeLabel} (${htmlCards.length})</span>`; 
+            title.innerHTML = `<span style="color: ${color}">${type.toUpperCase()} LISTING / ${typeHindi} सूची (${htmlCards.length})</span>`; 
             if(htmlCards.length > 0) { 
                 listGrid.style.display = 'grid'; 
                 listGrid.innerHTML = htmlCards.join(''); 
             } else { 
                 listGrid.style.display = 'block'; 
-                listGrid.innerHTML = `<i>${currentLang==='en'?'Nothing to show here.':'दिखाने के लिए कुछ नहीं है।'}</i>`; 
+                listGrid.innerHTML = `<i>Nothing to show here. (यहाँ दिखाने के लिए कुछ नहीं है।)</i>`; 
             } 
         } 
 
@@ -914,7 +764,6 @@
             document.getElementById('timer-wrapper').style.display = 'none'; 
             document.getElementById('action-buttons').style.display = 'none'; 
             document.getElementById('back-to-dash-btn').style.display = 'block'; 
-            document.getElementById('back-to-dash-btn').innerText = currentLang === 'en' ? "← Back to Dashboard" : "← वापस डैशबोर्ड पर";
         } 
         
         function backToDashboard() { 
@@ -923,13 +772,8 @@
             document.getElementById('action-buttons').style.display = 'grid'; 
             document.getElementById('back-to-dash-btn').style.display = 'none'; 
         } 
-
-        // Bind core functions to global scope to make sure inline HTML attributes work 100%
-        window.toggleLanguage = toggleLanguage;
-        window.cycleMood = cycleMood;
     </script> 
 
-    <!-- CLOUD CORE IMPLEMENTATIONS -->
     <script type="module"> 
         import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js"; 
         import { getFirestore, doc, addDoc, collection, getDoc, getDocs, query, where, orderBy } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js"; 
@@ -952,7 +796,7 @@
             const plus = parseFloat(document.getElementById('mark-plus').value) || 2; 
             const minus = Math.abs(parseFloat(document.getElementById('mark-minus').value)) || 0.5; 
 
-            if (!title || !rawKey) return showToast(currentLang === 'en' ? "Provide a Title and Answer Key!" : "शीर्षक और उत्तर कुंजी प्रदान करें!"); 
+            if (!title || !rawKey) return showToast("Provide a Title and Answer Key! (शीर्षक और उत्तर कुंजी प्रदान करें!)"); 
 
             try { 
                 const docRef = await addDoc(collection(db, "mocks"), { 
@@ -960,9 +804,9 @@
                 }); 
                 const mockLink = `${window.location.origin}${window.location.pathname}?mock=${docRef.id}`; 
                 navigator.clipboard.writeText(mockLink).then(() => { 
-                    alert(currentLang === 'en' ? `🎉 Mock Created & Copied to Clipboard!\n\nLink: ${mockLink}` : `🎉 मॉक टेस्ट लिंक तैयार और क्लिपबोर्ड पर कॉपी हो गया है!\n\nलिंक: ${mockLink}`); 
-                }).catch(() => { prompt(currentLang === 'en' ? "🎉 Mock Created! Copy here:" : "🎉 मॉक लिंक तैयार! यहाँ से कॉपी करें:", mockLink); }); 
-            } catch (error) { showToast(currentLang === 'en' ? "Failed to save mock." : "मॉक सहेजने में विफल।"); } 
+                    alert(`🎉 Mock Created & Copied to Clipboard! (मॉक बन गया है और क्लिपबोर्ड पर कॉपी हो गया है!)\n\nLink: ${mockLink}`); 
+                }).catch(() => { prompt("🎉 Mock Created! Copy here: (मॉक बन गया है! यहाँ से कॉपी करें:)", mockLink); }); 
+            } catch (error) { showToast("Failed to save mock. (मॉक सहेजने में विफल।)"); } 
         } 
 
         async function checkUrlParams() { 
@@ -979,7 +823,7 @@
                         document.getElementById('answer-key').value = mockData.answerKey; 
                         document.getElementById('mark-plus').value = mockData.plus; 
                         document.getElementById('mark-minus').value = mockData.minus; 
-                        showToast((currentLang === 'en' ? `Ready: ` : `तैयार है: `) + mockData.title); 
+                        showToast(`Ready (तैयार है): ${mockData.title}`); 
                     } 
                 } catch (error) { console.error(error); } 
             } 
@@ -998,7 +842,7 @@
                     timeTaken: exam.elapsed, 
                     submittedAt: new Date() 
                 }); 
-                showToast(langPack[currentLang].toastSynced); 
+                showToast("Score synced to Live Rankings! 🏆 (स्कोर लाइव रैंकिंग में जुड़ गया है!)"); 
                 fetchLeaderboard(exam.mockId); 
             } catch (error) { console.error(error); } 
         } 
@@ -1009,19 +853,18 @@
             const summaryBox = document.getElementById('leaderboard-summary-box'); 
 
             lPanel.style.display = 'block'; 
-            lGrid.innerHTML = langPack[currentLang].leaderboardFetching; 
-            document.getElementById('leaderboard-title').innerText = currentLang === 'en' ? "Live Rankings 🏆" : "लाइव रैंकिंग 🏆";
+            lGrid.innerHTML = 'Fetching scoreboard stats... (स्कोरबोर्ड डेटा लाया जा रहा है...)'; 
 
             try { 
                 const q = query( 
                     collection(db, "scores"), 
                     where("mockId", "==", mockId), 
-                    orderBy("score", "desc") 
+                    orderBy("score", "desc")
                 ); 
                 
                 const querySnapshot = await getDocs(q); 
                 if (querySnapshot.empty) { 
-                    lGrid.innerHTML = langPack[currentLang].leaderboardEmpty; 
+                    lGrid.innerHTML = '<i>No ranks found yet. Be the first! (अभी तक कोई रैंकिंग नहीं मिली। आप पहले बनें!)</i>'; 
                     summaryBox.innerText = ""; 
                     return; 
                 } 
@@ -1038,7 +881,7 @@
                         <div class="leaderboard-row"> 
                             <div> 
                                 <span class="leaderboard-user">#${rank} ${data.username}</span> 
-                                <span class="leaderboard-meta">⏱ ${min}:${sec} (${currentLang==='en'?'R':'सही'}:${data.right} ${currentLang==='en'?'W':'गलत'}:${data.wrong})</span> 
+                                <span class="leaderboard-meta">⏱ ${min}:${sec} (R:${data.right} W:${data.wrong})</span> 
                             </div> 
                             <div class="leaderboard-score">${data.score.toFixed(1)}</div> 
                         </div> 
@@ -1046,15 +889,14 @@
                     rank++; 
                 }); 
 
-                summaryBox.innerText = langPack[currentLang].leaderboardSubmissions + querySnapshot.size; 
+                summaryBox.innerText = `Total Submissions (कुल सबमिशन): ${querySnapshot.size}`; 
                 lGrid.innerHTML = rowsHtml.join(''); 
             } catch (error) { 
                 console.error(error); 
-                lGrid.innerHTML = `<i style="color:var(--error)">${currentLang === 'en' ? 'Failed to load data.' : 'डेटा लोड करने में विफल।'}</i>`; 
+                lGrid.innerHTML = '<i style="color:var(--error)">Failed to load data. Ensure Firestore index is built. (डेटा लोड करने में विफल।)</i>'; 
             } 
         } 
 
-        // Bind Firebase methods to global window scope so standard script tags can invoke them
         window.publishNewMock = publishNewMock; 
         window.saveScoreToCloud = saveScoreToCloud; 
         window.fetchLeaderboard = fetchLeaderboard; 
